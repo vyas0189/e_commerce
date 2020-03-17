@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import { join } from 'path';
 
 export const {
-    APP_PORT = 4000,
+    PORT = 4000,
     NODE_ENV = 'development',
     MONGO_HOST = 'localhost',
     MONGO_PORT = 27017,
