@@ -12,7 +12,8 @@
     "dev": "cross-env NODE_ENV=development concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "prod": "cross-env NODE_ENV=production concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "eslint": "eslint ./src/ && eslint index.js",
-    "eslint-fix": "eslint ./src/ --fix && eslint index.js --fix"
+    "eslint-fix": "eslint ./src/ --fix && eslint index.js --fix",
+    "heroku-postbuild": "cd client && yarn --only=dev --no-shrinkwrap && yarn build"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
