@@ -8,11 +8,11 @@
     "start": "node index.js",
     "server": "nodemon index.js --exec babel-node index.js",
     "build": "yarn && cd client && yarn && yarn build",
-    "test": "set NODE_ENV=test && jest --testTimeout=10000",
+    "test": "jest --testTimeout=10000",
     "dev": "set NODE_ENV=development && concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "prod": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "eslint": "eslint ./config/ && eslint index.js",
-    "eslint-fix": "eslint ./config/ --fix && eslint index.js --fix"
+    "prod": "set NODE_ENV=production concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "eslint": "eslint ./src/ && eslint index.js",
+    "eslint-fix": "eslint ./src/ --fix && eslint index.js --fix"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
