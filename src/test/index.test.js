@@ -7,6 +7,6 @@ describe('Home Endpoint', () => {
     const res = await request(app)
       .get('/');
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty('welcom');
+    expect(res.body).toHaveProperty('welcome');
   });
 });
