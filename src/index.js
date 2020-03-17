@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import app, { APP_PORT, IN_PROD, MONGO_URI } from './config';
+import app, { IN_PROD, MONGO_URI, PORT } from './config';
 
 (async () => {
     try {
@@ -24,7 +24,7 @@ import app, { APP_PORT, IN_PROD, MONGO_URI } from './config';
     } catch (err) {
         console.log(err);
     }
-    app.listen(APP_PORT, () => {
-        console.log(`http://localhost:${APP_PORT}`);
+    app.listen(PORT, () => {
+        console.log(`http://localhost:${PORT}`);
     });
 })();
