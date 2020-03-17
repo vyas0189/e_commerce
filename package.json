@@ -8,9 +8,9 @@
     "start": "node index.js",
     "server": "nodemon index.js --exec babel-node index.js",
     "build": "yarn && cd client && yarn && yarn build",
-    "test": "jest --testTimeout=10000",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "prod": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
+    "dev": "cross-env NODE_ENV=development concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "prod": "cross-env NODE_ENV=production concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "eslint": "eslint ./src/ && eslint index.js",
     "eslint-fix": "eslint ./src/ --fix && eslint index.js --fix"
   },
@@ -22,6 +22,7 @@
     "@babel/preset-env": "^7.8.7",
     "@babel/register": "^7.8.6",
     "@babel/runtime": "^7.8.7",
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-plugin-import": "^2.20.1",
@@ -29,7 +30,8 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.0",
     "jest": "^25.1.0",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -42,5 +44,11 @@
     "mongoose": "^5.9.4",
     "morgan": "^1.9.1",
     "multer": "^1.4.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
