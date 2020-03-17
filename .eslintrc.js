@@ -16,6 +16,6 @@ module.exports = {
     "no-console": "off",
     "linebreak-style": "off",
     "consistent-return": "off",
-    "indent": 1
+    "indent": 4
   }
 };

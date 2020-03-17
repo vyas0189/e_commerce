@@ -9,8 +9,8 @@
     "server": "nodemon index.js --exec babel-node index.js",
     "build": "yarn && cd client && yarn && yarn build",
     "test": "jest --testTimeout=10000",
-    "dev": "set NODE_ENV=development && concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "prod": "set NODE_ENV=production concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "prod": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "eslint": "eslint ./src/ && eslint index.js",
     "eslint-fix": "eslint ./src/ --fix && eslint index.js --fix"
   },
