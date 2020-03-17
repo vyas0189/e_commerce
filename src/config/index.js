@@ -2,6 +2,7 @@ import cors from 'cors';
 import express, { json } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import { join } from 'path';
 
 export const {
     APP_PORT = 4000,
@@ -20,6 +21,13 @@ app.use(cors());
 app.use(morgan('common'));
 app.use(helmet());
 app.use(json({ extended: false }));
+
+if (IN_PROD) {
+    app.use(express.static(join(__dirname, '../client/build')));
+    app.get('*', (req, res) => {
+        res.sendFile(join(__dirname, '../client/build', 'index.html'));
+    });
+}
 
 app.get('/', (req, res) => {
     res.json({ welcome: 'CougarCS Backend 🐯' });
