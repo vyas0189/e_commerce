@@ -3,6 +3,7 @@ import express, { json } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { join } from 'path';
+import address from '../routes';
 
 export const {
     PORT = 4000,
@@ -10,6 +11,11 @@ export const {
     MONGO_HOST = 'localhost',
     MONGO_PORT = 27017,
     MONGO_DATABASE = 'ecommerce',
+    ADDRESS_URL,
+    ADDRESS_ACCESS_LICENSE_NUMBER,
+    ADDRESS_USERNAME,
+    ADDRESS_PASSWORD,
+
 } = process.env;
 
 export const IN_PROD = NODE_ENV === 'production';
@@ -30,8 +36,10 @@ if (IN_PROD) {
 }
 
 app.get('/', (req, res) => {
-    res.json({ welcome: 'CougarCS Backend 🐯' });
+    res.json({ welcome: 'E-Commerce 🛒' });
 });
+
+app.use('/address', address);
 
 app.use((req, res, next) => {
     const error = new Error(`Not Found - ${req.originalUrl}`);
