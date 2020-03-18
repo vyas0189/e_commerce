@@ -16,6 +16,9 @@ module.exports = {
         "no-console": "off",
         "linebreak-style": "off",
         "consistent-return": "off",
-        "indent": 0
+        "indent": 0,
+        "import/no-cycle": "off",
+        "func-names": "off",
+        "no-use-before-define": "off",
     }
 };
