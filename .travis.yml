@@ -6,8 +6,6 @@ cache:
     - "node_modules"
 services:
   - mongodb
-before_install:
-  - sudo npm install -g npm@latest
 before_script:
   - yarn build
 script:
