@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "stable"
+cache:
+  directories:
+    - "node_modules"
+services:
+  - mongodb
+before_install:
+  - sudo npm install -g npm@latest
+before_script:
+  - yarn build
+script:
+  - yarn test
+  - yarn test:coverage

@@ -1,5 +1,5 @@
 ### E-COMMERCE
-[![CircleCI](https://img.shields.io/circleci/build/github/vyas0189/e_commerce?style=for-the-badge&token=ac926b1191b057a542a70ff39a6ec95e95f9c357)](https://github.com/vyas0189/e_commerce)
+<!-- [![CircleCI](https://img.shields.io/circleci/build/github/vyas0189/e_commerce?style=for-the-badge&token=ac926b1191b057a542a70ff39a6ec95e95f9c357)](https://github.com/vyas0189/e_commerce) -->
 
 ### Description
 
