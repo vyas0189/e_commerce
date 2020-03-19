@@ -9,6 +9,7 @@
     "server": "nodemon index.js --exec babel-node index.js",
     "build": "yarn && cd client && yarn && yarn build",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
+    "test:coverage": "cross-env NODE_ENV=test jest --coverage",
     "dev": "cross-env NODE_ENV=development concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "prod": "cross-env NODE_ENV=production concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "eslint": "eslint ./src/ && eslint index.js",

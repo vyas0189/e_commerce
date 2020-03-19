@@ -16,7 +16,7 @@ const password = Joi.string().min(8).max(50).regex(/^(?=\S*[a-z])(?=\S*[A-Z])(?=
 const address = Joi
     .string()
     .trim()
-    .regex(/^[a-z\d\s\-\.\,]*$/i)
+    .regex(/^[a-z\d\s\-.,]*$/i)
     .max(100)
     .required();
 
