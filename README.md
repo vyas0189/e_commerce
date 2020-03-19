@@ -1,7 +1,7 @@
 ### E-COMMERCE
 
 [![Build Status](https://img.shields.io/travis/vyas0189/e_commerce?style=for-the-badge)](https://travis-ci.org/vyas0189/e_commerce)
-
+[![Coverage Status](https://img.shields.io/coveralls/github/vyas0189/e_commerce?style=for-the-badge)](https://coveralls.io/github/vyas0189/e_commerce?branch=master)
 ### Description
 
 You work at an e-commerce company. Customers can browse through products and order it online. Company delivers products to customers at the address they provide on their profile or during the checkout. In order to make sure packages are delivered at correct address system needs to validate the addresses provided by the customers. Several mail service providers offer online APIs to validate the addresses like USPS for free of charge but you need to register. 
