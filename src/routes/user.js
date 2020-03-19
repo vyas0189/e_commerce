@@ -16,12 +16,11 @@ router.post('/register', async (req, res) => {
         if (user) {
             return res
                 .status(500)
-                .json({ errors: [{ msg: 'User already exists' }] });
+                .json({ error: { msg: 'User already exists' } });
         }
-        user = new User({
+        user = await User.create({
             email, firstName, lastName, address, username, password, city, state, zip, address2, role,
         });
-        await user.save();
 
         res.json({ message: 'OK' });
     } catch (err) {

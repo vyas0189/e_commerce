@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-default */
 import cors from 'cors';
 import express, { json } from 'express';
 import helmet from 'helmet';

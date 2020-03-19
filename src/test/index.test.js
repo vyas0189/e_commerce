@@ -1,4 +1,7 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-undef */
+import 'dotenv/config';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import app from '../config';
@@ -20,12 +23,8 @@ async function dropAllCollections() {
     try {
       await collection.drop();
     } catch (error) {
-      // This error happens when you try to drop a collection that's already dropped. Happens infrequently.
-      // Safe to ignore.
       if (error.message === 'ns not found') return;
 
-      // This error happens when you use it.todo.
-      // Safe to ignore.
       if (error.message.includes('a background operation is currently running')) return;
 
       console.log(error.message);
@@ -43,6 +42,34 @@ describe('Home', () => {
       .get('/');
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('welcome');
+    done();
+  });
+
+  it('POST: Address Validation', async (done) => {
+    const res = await request(app)
+      .post('/address')
+      .send({
+        address: '4800 Calhoun Rd',
+        city: 'Houston',
+        state: 'TX',
+        zip: '77004',
+      });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.XAVResponse).toHaveProperty('Candidate');
+    done();
+  });
+
+  it('POST(FAIL): Address Validation', async (done) => {
+    const res = await request(app)
+      .post('/address')
+      .send({
+        city: 'Houston',
+        state: 'TX',
+        zip: '77004',
+      });
+
+    expect(res.statusCode).toEqual(500);
+    expect(res.body.details[0].message).toMatch('"address" is required');
     done();
   });
 
@@ -66,11 +93,34 @@ describe('Home', () => {
     expect(res.body).toHaveProperty('message');
     done();
   });
+
+  it('POST(FAIL): Create User', async (done) => {
+    const res = await request(app)
+      .post('/user/register')
+      .send({
+        firstName: 'Test',
+        username: 'test0',
+        password: '@Testing0',
+        lastName: 'Testing',
+        email: 'test@gmail.com',
+        address: '1111 Test Dr',
+        address2: 'APT 12',
+        city: 'TestCity',
+        state: 'TX',
+        zip: '7777',
+        role: 'user',
+      });
+
+    expect(res.statusCode).toEqual(500);
+    expect(res.body.error.msg).toMatch('User already exists');
+    await removeAllCollections();
+    done();
+  });
 });
 
-afterEach(async () => {
-  await removeAllCollections();
-});
+// afterEach(async () => {
+//   await removeAllCollections();
+// });
 
 afterAll(async () => {
   await dropAllCollections();
