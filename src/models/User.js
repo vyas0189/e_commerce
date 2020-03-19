@@ -12,17 +12,11 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        validate: {
-            validator: (email) => User.doesntExist({ email }),
-            message: ({ value }) => `Email ${value} has already been taken`,
-        },
+        required: true,
     },
     username: {
         type: String,
-        validate: {
-            validator: (username) => User.doesntExist({ username }),
-            message: ({ value }) => `Username ${value} has already been taken`,
-        },
+        required: true,
     },
     role: {
         type: String,
@@ -63,13 +57,8 @@ userSchema.pre('save', async function () {
     }
 });
 
-userSchema.statics.doesntExist = async function (options) {
-    return await this.where(options).countDocuments() === 0;
-};
-
 userSchema.methods.matchesPassword = async function (password) {
     return compare(password, this.password);
 };
-const User = mongoose.model('user', userSchema);
 
-export default User;
+export default mongoose.model('user', userSchema);

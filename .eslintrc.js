@@ -20,5 +20,7 @@ module.exports = {
         "import/no-cycle": "off",
         "func-names": "off",
         "no-use-before-define": "off",
+        "import/prefer-default-export": "off",
+        "max-len": "off",
     }
 };

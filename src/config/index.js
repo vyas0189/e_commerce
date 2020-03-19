@@ -3,7 +3,7 @@ import express, { json } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { join } from 'path';
-import address from '../routes';
+import { default as address, default as user } from '../routes';
 
 export const {
     PORT = 4000,
@@ -40,6 +40,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/address', address);
+app.use('/user', user);
 
 app.use((req, res, next) => {
     const error = new Error(`Not Found - ${req.originalUrl}`);
