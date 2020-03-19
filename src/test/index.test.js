@@ -1,12 +1,78 @@
 /* eslint-disable no-undef */
+import mongoose from 'mongoose';
 import request from 'supertest';
 import app from '../config';
 
-describe('Home Endpoint', () => {
-  it('GET: Return Welcome Message', async () => {
+const TEST_DB = 'test';
+
+async function removeAllCollections() {
+  const collections = Object.keys(mongoose.connection.collections);
+  for (const collectionName of collections) {
+    const collection = mongoose.connection.collections[collectionName];
+    await collection.deleteMany();
+  }
+}
+
+async function dropAllCollections() {
+  const collections = Object.keys(mongoose.connection.collections);
+  for (const collectionName of collections) {
+    const collection = mongoose.connection.collections[collectionName];
+    try {
+      await collection.drop();
+    } catch (error) {
+      // This error happens when you try to drop a collection that's already dropped. Happens infrequently.
+      // Safe to ignore.
+      if (error.message === 'ns not found') return;
+
+      // This error happens when you use it.todo.
+      // Safe to ignore.
+      if (error.message.includes('a background operation is currently running')) return;
+
+      console.log(error.message);
+    }
+  }
+}
+beforeAll(async () => {
+  const url = `mongodb://localhost/${TEST_DB}`;
+  await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+});
+
+describe('Home', () => {
+  it('GET: Return Welcome Message', async (done) => {
     const res = await request(app)
       .get('/');
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('welcome');
+    done();
   });
+
+  it('POST: Create User', async (done) => {
+    const res = await request(app)
+      .post('/user/register')
+      .send({
+        firstName: 'Test',
+        username: 'test0',
+        password: '@Testing0',
+        lastName: 'Testing',
+        email: 'test@gmail.com',
+        address: '1111 Test Dr',
+        address2: 'APT 12',
+        city: 'TestCity',
+        state: 'TX',
+        zip: '7777',
+        role: 'user',
+      });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('message');
+    done();
+  });
+});
+
+afterEach(async () => {
+  await removeAllCollections();
+});
+
+afterAll(async () => {
+  await dropAllCollections();
+  await mongoose.connection.close();
 });
