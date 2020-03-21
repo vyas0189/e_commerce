@@ -9,5 +9,4 @@ services:
 before_script:
   - yarn build
 script:
-  # - yarn test
-  - yarn coveralls
+  - yarn test
