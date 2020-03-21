@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'product' }],
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
 }, {
     timestamps: true,
 });
@@ -57,8 +57,12 @@ userSchema.pre('save', async function () {
     }
 });
 
-userSchema.methods.matchesPassword = async function (password) {
+userSchema.methods.comparePassword = async function (password) {
     return compare(password, this.password);
 };
 
-export default mongoose.model('user', userSchema);
+userSchema.set('toJSON', {
+    transform: (doc, { __v, password, ...rest }) => rest,
+});
+
+export default mongoose.model('User', userSchema);

@@ -29,6 +29,8 @@ export const signUp = Joi.object().keys({
     email, firstName, lastName, address, username, password, city, state, zip, address2, role,
 });
 
-export const signIn = Joi.object().keys({
-    email, password,
+
+export const loginSchema = Joi.object({
+    username,
+    password,
 });

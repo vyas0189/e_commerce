@@ -10,10 +10,11 @@ import app, { MONGO_URI, PORT } from './config';
         }, () => {
             console.log('Database Connected');
         });
+
+        app.listen(PORT, () => {
+            console.log(`http://localhost:${PORT}`);
+        });
     } catch (err) {
         console.log(err);
     }
-    app.listen(PORT, () => {
-        console.log(`http://localhost:${PORT}`);
-    });
 })();
