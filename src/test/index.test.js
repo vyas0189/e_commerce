@@ -113,9 +113,28 @@ describe('Home', () => {
 
     expect(res.statusCode).toEqual(500);
     expect(res.body.error.msg).toMatch('User already exists');
-    await removeAllCollections();
     done();
   });
+
+  it('POST: LOGIN USER', async (done) => {
+    const res = await request(app)
+      .post('/user/login')
+      .send({ username: 'test0', password: '@Testing0' });
+
+    expect(res.statusCode).toEqual(200);
+    done();
+  });
+
+  // it('POST: LOGOUT USER', async (done) => {
+  //   const res = await request(app)
+  //     .get('/user/logout');
+  //   console.log(res.error);
+
+  //   expect(res.statusCode).toEqual(200);
+  //   expect(res.body).toHaveProperty('message');
+  //   done();
+  // });
+  // it('POST: Add an item', async(req, res) => )
 });
 
 // afterEach(async () => {
