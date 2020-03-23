@@ -5,14 +5,10 @@ import { productSchema, validate } from '../validation';
 
 const router = Router();
 
-router.get('/', async (req, res) => {
-    try {
-        const products = await Product.find();
-        res.json(products);
-    } catch (err) {
-        res.status(500).send(err);
-    }
-});
+router.get('/', catchAsync(async (req, res) => {
+    const products = await Product.find();
+    res.json(products);
+}));
 
 router.get('/:product_id', catchAsync(async (req, res) => {
     const product = await Product.findById(req.params.product_id);
@@ -23,7 +19,7 @@ router.get('/:product_id', catchAsync(async (req, res) => {
 }));
 
 router.post('/add', admin, catchAsync(async (req, res) => {
-    await validate(productSchema, req.body);
+    await validate(productSchema, req.body, req, res);
     const {
         name, productType, price, image, quantity,
     } = req.body;

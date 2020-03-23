@@ -1,7 +1,7 @@
 import { compare, hash } from 'bcryptjs';
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
@@ -12,10 +12,18 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        validate: {
+            validator: (email) => User.doesNotExist({ email }),
+            message: 'Email already exists',
+        },
         required: true,
     },
     username: {
         type: String,
+        validate: {
+            validator: (username) => User.doesNotExist({ username }),
+            message: 'Username already exists',
+        },
         required: true,
     },
     role: {
@@ -46,23 +54,34 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+    products: [
+        {
+            productID: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+            quantity: { type: Number, required: true },
+        },
+    ],
 }, {
     timestamps: true,
 });
 
-userSchema.pre('save', async function () {
+UserSchema.pre('save', async function () {
     if (this.isModified('password')) {
         this.password = await hash(this.password, 10);
     }
 });
 
-userSchema.methods.comparePassword = async function (password) {
+UserSchema.methods.comparePassword = async function (password) {
     return compare(password, this.password);
 };
 
-userSchema.set('toJSON', {
+UserSchema.set('toJSON', {
     transform: (doc, { __v, password, ...rest }) => rest,
 });
 
-export default mongoose.model('User', userSchema);
+UserSchema.statics.doesNotExist = async function (field) {
+    return await this.where(field).countDocuments() === 0;
+};
+
+const User = mongoose.model('User', UserSchema);
+
+export default User;

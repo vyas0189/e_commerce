@@ -10,8 +10,8 @@ const lastName = Joi.string().min(3).max(128).trim()
     .required();
 const username = Joi.string().alphanum().min(3).max(30)
     .required();
-const password = Joi.string().min(8).max(50).regex(/^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*\d).*$/)
-    .required();
+const password = Joi.string()
+    .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/).required();
 
 const address = Joi
     .string()

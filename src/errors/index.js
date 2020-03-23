@@ -1,17 +1,22 @@
+/* eslint-disable constructor-super */
+/* eslint-disable max-classes-per-file */
 class HttpError extends Error {
-    status
+    constructor() {
+        super();
+        this.status = 200;
+    }
 }
 
 export class BadRequest extends HttpError {
     constructor(message = 'Bad Request') {
-        super(message)
-        this.status = 400
+        super(message);
+        this.status = 400;
     }
 }
 
 export class Unauthorized extends HttpError {
     constructor(message = 'Unauthorized') {
-        super(message)
-        this.status = 401
+        super(message);
+        this.status = 401;
     }
 }
