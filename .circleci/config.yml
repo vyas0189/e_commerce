@@ -14,13 +14,10 @@ jobs:
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
           name: Build App
-          command: "yarn build"
+          command: yarn build
       - run:
-          name: Test App
-          command: "yarn coveralls"
-      - run:
-          name: "Run Jest and Collect Coverage Reports"
-          command: "yarn test:coverage"
+          name: Run Jest and Collect Coverage Reports
+          command: yarn test:coveralls
       - store_artifacts:
           path: coverage
       - save_cache:
