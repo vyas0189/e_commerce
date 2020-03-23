@@ -8,13 +8,13 @@ import app from '../config';
 
 const TEST_DB = 'test';
 
-async function removeAllCollections() {
-  const collections = Object.keys(mongoose.connection.collections);
-  for (const collectionName of collections) {
-    const collection = mongoose.connection.collections[collectionName];
-    await collection.deleteMany();
-  }
-}
+// async function removeAllCollections() {
+//   const collections = Object.keys(mongoose.connection.collections);
+//   for (const collectionName of collections) {
+//     const collection = mongoose.connection.collections[collectionName];
+//     await collection.deleteMany();
+//   }
+// }
 
 async function dropAllCollections() {
   const collections = Object.keys(mongoose.connection.collections);
@@ -69,7 +69,7 @@ describe('Home', () => {
       });
 
     expect(res.statusCode).toEqual(500);
-    expect(res.body.details[0].message).toMatch('"address" is required');
+    expect(res.body.message).toMatch('Unable to validate');
     done();
   });
 
@@ -112,7 +112,7 @@ describe('Home', () => {
       });
 
     expect(res.statusCode).toEqual(500);
-    expect(res.body.error.msg).toMatch('User already exists');
+    expect(res.body.error).toMatch('User already exists');
     done();
   });
 

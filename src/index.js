@@ -7,6 +7,7 @@ import app, { MONGO_URI, PORT } from './config';
         await mongoose.connect(MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            useFindAndModify: false,
         }, () => {
             console.log('Database Connected');
         });

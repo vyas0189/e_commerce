@@ -1,10 +1,9 @@
 import joi from '@hapi/joi';
 import mongoose from 'mongoose';
-import { BadRequest } from '../errors';
 
-const objectId = (joi) => ({
+const objectId = (j) => ({
     type: 'objectId',
-    base: joi.string(),
+    base: j.string(),
     messages: {
         objectId: '"{#label}" is not a valid ID',
     },
@@ -18,10 +17,10 @@ const objectId = (joi) => ({
 
 export const Joi = joi.extend(objectId);
 
-export const validate = async (schema, payload) => {
+export const validate = async (schema, payload, req, res) => {
     try {
         await schema.validateAsync(payload, { abortEarly: false });
     } catch (e) {
-        throw new BadRequest(e);
+        res.status(500).json({ message: 'Unable to validate' });
     }
 };

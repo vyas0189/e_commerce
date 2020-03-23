@@ -1,0 +1,33 @@
+version: 2.1
+jobs:
+  build-and-test:
+    working_directory: ~/e_commerce
+    docker:
+      - image: circleci/node:12
+      - image: mongo:latest
+    steps:
+      - checkout
+      - run:
+          name: Update npm
+          command: "sudo npm install -g npm@latest"
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: Build App
+          command: "yarn build"
+      - run:
+          name: Test App
+          command: "yarn coveralls"
+      - run:
+          name: "Run Jest and Collect Coverage Reports"
+          command: "yarn test:coverage"
+      - store_artifacts:
+          path: coverage
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+workflows:
+  build-and-test:
+    jobs:
+      - build-and-test
