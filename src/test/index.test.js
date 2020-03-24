@@ -55,7 +55,7 @@ describe('Home', () => {
         zip: '77004',
       });
     expect(res.statusCode).toEqual(200);
-    expect(res.body.XAVResponse).toHaveProperty('Candidate');
+    expect(res.body.data.XAVResponse).toHaveProperty('Candidate');
     done();
   });
 
@@ -112,7 +112,7 @@ describe('Home', () => {
       });
 
     expect(res.statusCode).toEqual(500);
-    expect(res.body.error).toMatch('User already exists');
+    expect(res.body.message).toMatch('User already exists');
     done();
   });
 

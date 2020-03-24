@@ -25,10 +25,14 @@ const state = Joi.string().min(2).required();
 const zip = Joi.number().min(4).required();
 const role = Joi.string().required();
 const address2 = Joi.string().trim();
-export const signUp = Joi.object().keys({
+
+export const signUpSchema = Joi.object().keys({
     email, firstName, lastName, address, username, password, city, state, zip, address2, role,
 });
 
+export const updateUserSchema = Joi.object({
+    email, firstName, lastName, address, username, city, state, zip, address2,
+});
 
 export const loginSchema = Joi.object({
     username,
