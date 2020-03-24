@@ -21,6 +21,6 @@ export const validate = async (schema, payload, req, res) => {
     try {
         await schema.validateAsync(payload, { abortEarly: false });
     } catch (e) {
-        res.status(500).json({ message: 'Unable to validate' });
+        return res.status(500).json({ message: 'Unable to validate', e });
     }
 };

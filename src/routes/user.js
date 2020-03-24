@@ -3,21 +3,23 @@ import { logIn, logOut } from '../auth';
 import { auth, catchAsync, guest } from '../middleware';
 import Product from '../models/Product';
 import User from '../models/User';
-import { loginSchema, signUp, validate } from '../validation';
+import {
+ loginSchema, signUpSchema, updateUserSchema, validate,
+} from '../validation';
 
 const router = Router();
 
 router.get('/me', auth, catchAsync(async (req, res) => {
     await User.findById(req.session.userId).populate('populate').exec((err, data) => {
         if (err) {
-            res.status(401).json({ message: 'Cannot find user' });
+            return res.status(401).json({ message: 'Cannot find user' });
         }
-        res.status(200).json(data);
+        return res.status(200).json({ message: 'OK', data });
     });
 }));
 
 router.post('/register', guest, catchAsync(async (req, res) => {
-    await validate(signUp, req.body, req, res);
+    await validate(signUpSchema, req.body, req, res);
     const {
         email, firstName, lastName, address, username, password, city, state, zip, address2, role,
     } = req.body;
@@ -27,14 +29,14 @@ router.post('/register', guest, catchAsync(async (req, res) => {
     if (user) {
         return res
             .status(500)
-            .json({ error: 'User already exists' });
+            .json({ message: 'User already exists' });
     }
     user = await User.create({
         email, firstName, lastName, address, username, password, city, state, zip, address2, role,
     });
 
     logIn(req, user.id);
-    res.status(200).json({ message: 'OK', user });
+    return res.status(200).json({ message: 'OK', user });
 }));
 
 router.post('/login', guest, catchAsync(async (req, res) => {
@@ -45,7 +47,7 @@ router.post('/login', guest, catchAsync(async (req, res) => {
     const user = await User.findOne({ username });
 
     if (!user || !(await user.comparePassword(password))) {
-        res.status(401).json({ message: 'Incorrect email or password' });
+        return res.status(401).json({ message: 'Incorrect email or password' });
     }
 
     logIn(req, user.id);
@@ -55,11 +57,29 @@ router.post('/login', guest, catchAsync(async (req, res) => {
 
 router.delete('/logout', auth, catchAsync(async (req, res) => {
     await logOut(req, res);
-    res.status(200).json({ message: 'OK' });
+    return res.status(200).json({ message: 'OK' });
+}));
+
+router.put('/update', auth, catchAsync(async (req, res) => {
+    await validate(updateUserSchema, req.body, req, res);
+    const {
+        email, firstName, lastName, address, username, password, city, state, zip, address2,
+    } = req.body;
+    const { userId } = req.session;
+    const user = User.findById(userId);
+    if (user) {
+        const u = await User.findOneAndUpdate({ _id: userId }, {
+            $set: {
+                email, firstName, lastName, address, username, password, city, state, zip, address2,
+            },
+        });
+        return res.status(200).json({ message: 'OK', u });
+    }
+    return res.status(500).json({ message: 'Unable to update user' });
 }));
 
 router.post('/addProductToCart', auth, catchAsync(async (req, res) => {
-    const { productID, quantity } = req.body.cart;
+    const { productID, quantity } = req.body;
     const user = await User.findById(req.session.userId);
     const product = await Product.findById(productID);
 
@@ -73,12 +93,41 @@ router.post('/addProductToCart', auth, catchAsync(async (req, res) => {
                 await User.updateOne({ _id: user.id, 'products.productID': item }, { $set: { 'products.$.quantity': itemQuantity } });
             } else {
                 const { products } = user;
-                await User.findOneAndUpdate({ _id: user.id }, { $set: { products: [...products, req.body.cart] } });
+                await User.findOneAndUpdate({ _id: user.id }, {
+                    $set: {
+                        products: [...products, {
+                            productID,
+                            quantity,
+                        }],
+                    },
+                });
             }
             return res.status(200).json({ message: 'Product added successfully' });
         }
     }
     return res.status(500).json({ message: 'Unable to add product' });
+}));
+
+router.put('/updateFromCart', auth, catchAsync(async (req, res) => {
+    const { userId } = req.session;
+    const { productID, quantity } = req.body;
+    const user = await User.findOne({ _id: userId, 'products.productID': productID });
+
+    if (user) {
+        const product = await Product.findById(productID);
+
+        if (product) {
+            await User.findOneAndUpdate({ _id: userId, 'products.productID': productID }, { $set: { 'products.$.quantity': quantity } });
+            if (quantity <= 0) {
+                await User.updateOne({ _id: userId, 'products.productID': productID }, { $pull: { products: { productID } } });
+            }
+            return res.status(200).json({ message: 'Product Updated' });
+        }
+        await User.updateOne({ _id: userId, 'products.productID': productID }, { $pull: { products: { productID } } });
+
+        return res.status(201).json({ message: 'Unable to Update Product' });
+    }
+    return res.status(500).json({ message: 'Unable to Update' });
 }));
 
 router.get('/cart', auth, catchAsync(async (req, res) => {
@@ -97,20 +146,18 @@ router.post('/checkout', auth, catchAsync(async (req, res) => {
     const user = await User.findById(req.session.userId);
     const err = [];
     if (user && user.products.length > 0) {
-        user.products.map(async (product) => {
+        await Promise.all(user.products.map(async (product) => {
             const p = await Product.findById(product.productID);
 
             if (p.quantity > 0 && (p.quantity - product.quantity) >= 0) {
                 await Product.findOneAndUpdate({ _id: product.productID }, { $set: { quantity: p.quantity - product.quantity } });
                 await User.updateOne({ _id: user.id, 'products._id': product.id }, { $pull: { products: { productID: product.productID } } });
             } else {
-                return err.push(`Item, ${p.name}, is sold out`);
+                return err.push(`Item, ${p.name}, is sold out, Quantity available: ${p.quantity}`);
             }
-        });
+        }));
 
         if (err.length > 0) {
-            console.log('EEEEEE');
-
             return res.status(201).json({ message: err });
         }
 

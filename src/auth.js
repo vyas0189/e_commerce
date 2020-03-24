@@ -10,7 +10,6 @@ export const logIn = (req, userId) => {
 export const logOut = (req, res) => new Promise((resolve, reject) => {
     req.session.destroy((err) => {
         if (err) {
-            console.log(err);
             reject(err);
         }
 
@@ -23,9 +22,7 @@ export const logOut = (req, res) => new Promise((resolve, reject) => {
 export const isAdmin = async (req) => {
     if (req.session.userId) {
         const user = await User.findById(req.session.userId);
-        console.log(user);
         if (user) {
-            console.log(user.role);
             return user.role === 'admin';
         }
     }

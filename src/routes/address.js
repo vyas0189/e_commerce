@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Router } from 'express';
-import { ADDRESS_ACCESS_LICENSE_NUMBER, ADDRESS_PASSWORD, ADDRESS_URL, ADDRESS_USERNAME } from '../config';
+import {
+ ADDRESS_ACCESS_LICENSE_NUMBER, ADDRESS_PASSWORD, ADDRESS_URL, ADDRESS_USERNAME,
+} from '../config';
 import { catchAsync } from '../middleware';
 import { addressValidator, validate } from '../validation';
 
@@ -35,7 +37,7 @@ router.post('/', catchAsync(async (req, res) => {
         },
     };
     const response = await axios.post(ADDRESS_URL, data, configAddress);
-    res.status(200).json(response.data);
+    return res.status(200).json({ message: 'OK', data: response.data });
 }));
 
 export default router;

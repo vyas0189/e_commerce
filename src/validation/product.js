@@ -3,17 +3,22 @@ import objectId from 'joi-objectid';
 
 Joi.objectId = objectId(Joi);
 
-const id = Joi.objectId().required();
+const productID = Joi.objectId().required();
 const name = Joi.string().min(3).required();
 const productType = Joi.string().valid('shoes', 'women', 'men', 'teen', 'kid').required();
 const quantity = Joi.number().integer().required();
+const description = Joi.string().required();
 const price = Joi.number().required();
 const image = Joi.string().required();
 
 export const productSchema = Joi.object({
-    name, productType, quantity, price, image,
+    name, productType, quantity, price, image, description,
 });
 
 export const productIDSchema = Joi.object({
-    id,
+    productID,
+});
+
+export const productUpdateSchema = Joi.object({
+    productID, name, productType, quantity, price, image, description,
 });

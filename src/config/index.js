@@ -7,7 +7,9 @@ import helmet from 'helmet';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import { join } from 'path';
-import { default as address, default as product, default as user } from '../routes';
+import address from '../routes/address';
+import product from '../routes/product';
+import user from '../routes/user';
 
 const TWO_HOUR = 1000 * 60 * 60 * 2;
 const MongoStore = connectMongo(session);
@@ -65,9 +67,9 @@ app.get('/', (req, res) => {
     res.json({ welcome: 'E-Commerce 🛒' });
 });
 
+app.use('/product', product);
 app.use('/address', address);
 app.use('/user', user);
-app.use('/product', product);
 
 app.use((req, res, next) => {
     const error = new Error(`Not Found - ${req.originalUrl}`);
