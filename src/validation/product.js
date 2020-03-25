@@ -1,7 +1,4 @@
-import Joi from '@hapi/joi';
-import objectId from 'joi-objectid';
-
-Joi.objectId = objectId(Joi);
+import { Joi } from './joi';
 
 const productID = Joi.objectId().required();
 const name = Joi.string().min(3).required();

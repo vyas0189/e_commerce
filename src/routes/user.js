@@ -1,11 +1,9 @@
 import { Router } from 'express';
 import { logIn, logOut } from '../auth';
-import { auth, catchAsync, guest } from '../middleware';
+import { auth, catchAsync, guest, serverError } from '../middleware';
 import Product from '../models/Product';
 import User from '../models/User';
-import {
- loginSchema, signUpSchema, updateUserSchema, validate,
-} from '../validation';
+import { loginSchema, signUpSchema, updateUserSchema, validate } from '../validation';
 
 const router = Router();
 
@@ -75,7 +73,7 @@ router.put('/update', auth, catchAsync(async (req, res) => {
         });
         return res.status(200).json({ message: 'OK', u });
     }
-    return res.status(500).json({ message: 'Unable to update user' });
+    return serverError;
 }));
 
 router.post('/addProductToCart', auth, catchAsync(async (req, res) => {
@@ -105,7 +103,7 @@ router.post('/addProductToCart', auth, catchAsync(async (req, res) => {
             return res.status(200).json({ message: 'Product added successfully' });
         }
     }
-    return res.status(500).json({ message: 'Unable to add product' });
+    return serverError;
 }));
 
 router.put('/updateFromCart', auth, catchAsync(async (req, res) => {
@@ -123,11 +121,11 @@ router.put('/updateFromCart', auth, catchAsync(async (req, res) => {
             }
             return res.status(200).json({ message: 'Product Updated' });
         }
-        await User.updateOne({ _id: userId, 'products.productID': productID }, { $pull: { products: { productID } } });
+        // await User.updateOne({ _id: userId, 'products.productID': productID }, { $pull: { products: { productID } } });
 
         return res.status(201).json({ message: 'Unable to Update Product' });
     }
-    return res.status(500).json({ message: 'Unable to Update' });
+    return serverError;
 }));
 
 router.get('/cart', auth, catchAsync(async (req, res) => {
@@ -135,7 +133,7 @@ router.get('/cart', auth, catchAsync(async (req, res) => {
     if (user) {
         await User.findOne({ _id: user.id }).populate('products.productID').exec((err, product) => {
             if (err) {
-                return res.status(500).json({ message: 'Unable to get cart' });
+                return serverError;
             }
             return res.status(200).json({ message: 'OK', cart: product.products });
         });

@@ -1,6 +1,6 @@
 export const catchAsync = (handler) => (...args) => handler(...args).catch(args[2]);
 
-export const notFound = (req, res) => res.status(404).json({ message: 'Not Found' });
+// export const notFound = (req, res) => res.status(404).json({ message: 'Not Found' });
 
 export const serverError = (err, req, res) => {
     if (!err.status) {

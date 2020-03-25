@@ -1,9 +1,7 @@
 import { Router } from 'express';
-import { admin, catchAsync } from '../middleware';
+import { admin, catchAsync, serverError } from '../middleware';
 import Product from '../models/Product';
-import {
- productIDSchema, productSchema, productUpdateSchema, validate,
-} from '../validation';
+import { productIDSchema, productSchema, productUpdateSchema, validate } from '../validation';
 
 const router = Router();
 
@@ -47,7 +45,7 @@ router.put('/', admin, catchAsync(async (req, res) => {
         const pro = await Product.findOneAndUpdate({ _id: productID }, { $set: p });
         return res.status(200).json({ message: 'OK', pro });
     }
-    return res.status(500).json({ message: 'Unable to Update' });
+    return serverError;
 }));
 
 router.delete('/:productID', admin, catchAsync(async (req, res) => {
@@ -58,7 +56,7 @@ router.delete('/:productID', admin, catchAsync(async (req, res) => {
         const p = await Product.findByIdAndRemove({ _id: productID });
         return res.status(200).json({ message: 'OK', p });
     }
-    return res.status(500).json({ message: 'Unable to remove product.' });
+    return serverError;
 }));
 
 export default router;
