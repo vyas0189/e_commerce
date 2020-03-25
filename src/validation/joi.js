@@ -14,7 +14,6 @@ const objectId = (j) => ({
     },
 });
 
-
 export const Joi = joi.extend(objectId);
 
 export const validate = async (schema, payload, req, res) => {

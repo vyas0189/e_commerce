@@ -1,4 +1,4 @@
-import Joi from '@hapi/joi';
+import { Joi } from './joi';
 
 const email = Joi.string().email().min(8).max(245)
     .lowercase()

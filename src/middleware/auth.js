@@ -1,4 +1,3 @@
-/* eslint-disable import/named */
 import { isAdmin, isLoggedIn } from '../auth';
 
 export const guest = (req, res, next) => {
