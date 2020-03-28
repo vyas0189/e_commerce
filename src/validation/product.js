@@ -19,3 +19,7 @@ export const productIDSchema = Joi.object({
 export const productUpdateSchema = Joi.object({
     productID, name, productType, quantity, price, image, description,
 });
+
+export const productTypeSchema = Joi.object({
+    productType,
+});

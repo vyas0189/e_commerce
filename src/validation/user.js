@@ -26,7 +26,7 @@ const zip = Joi.number().min(4).required();
 const role = Joi.string().required();
 const address2 = Joi.string().trim();
 
-export const signUpSchema = Joi.object().keys({
+export const signUpSchema = Joi.object({
     email, firstName, lastName, address, username, password, city, state, zip, address2, role,
 });
 

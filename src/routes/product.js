@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import { admin, catchAsync, serverError } from '../middleware';
 import Product from '../models/Product';
-import { productIDSchema, productSchema, productUpdateSchema, validate } from '../validation';
+import {
+ productIDSchema, productSchema, productTypeSchema, productUpdateSchema, validate,
+} from '../validation';
 
 const router = Router();
 
@@ -59,4 +61,10 @@ router.delete('/:productID', admin, catchAsync(async (req, res) => {
     return serverError;
 }));
 
+router.get('/category/:productType', catchAsync(async (req, res) => {
+    await validate(productTypeSchema, req.params, req, res);
+    const { productType } = req.params;
+    const product = await Product.find({ productType });
+    res.status(200).json({ message: 'OK', product });
+}));
 export default router;

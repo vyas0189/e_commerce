@@ -1,9 +1,13 @@
 import { Router } from 'express';
 import { logIn, logOut } from '../auth';
-import { auth, catchAsync, guest, serverError } from '../middleware';
+import {
+ auth, catchAsync, guest, serverError,
+} from '../middleware';
 import Product from '../models/Product';
 import User from '../models/User';
-import { loginSchema, signUpSchema, updateUserSchema, validate } from '../validation';
+import {
+ loginSchema, signUpSchema, updateUserSchema, validate,
+} from '../validation';
 
 const router = Router();
 

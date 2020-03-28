@@ -59,7 +59,8 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/client/",
-      "/coverage/"
+      "/coverage/",
+      "/src/index.js"
     ],
     "collectCoverageFrom": [
       "**/*.js",
