@@ -277,7 +277,7 @@ describe('Home', () => {
     done();
   });
 
-  it('GET: Checkout cart', async (done) => {
+  it('POST: Checkout cart', async (done) => {
     const res = await agent
       .post('/user/checkout');
 
@@ -312,7 +312,13 @@ describe('Home', () => {
   //   expect(res.body.message).toMatch('Product Updated');
   //   done();
   // });
-
+  it('DELETE: Delete product', async (done) => {
+    const res = await agent
+      .delete(`/product/${productID}`);
+    expect(res.statusCode).toEqual(401);
+    expect(res.body.message).toMatch('Not Authorized!');
+    done();
+  });
 
   it('POST: LOGOUT USER', async (done) => {
     const res = await agent
@@ -320,6 +326,15 @@ describe('Home', () => {
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('message');
+    done();
+  });
+
+  it('GET: Checkout cart', async (done) => {
+    const res = await agent
+      .post('/user/checkout');
+
+    expect(res.statusCode).toEqual(401);
+    expect(res.body.message).toMatch('You must be logged in');
     done();
   });
 
