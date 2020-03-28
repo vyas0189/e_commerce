@@ -222,6 +222,7 @@ describe('Home', () => {
     expect(res.statusCode).toEqual(200);
     done();
   });
+
   it('PUT: Update User', async (done) => {
     const res = await agent
       .put('/user/update')
@@ -267,31 +268,50 @@ describe('Home', () => {
     done();
   });
 
-  // it('PUT(FAIL): Fail to update product to cart', async (done) => {
+  it('GET: Get items in cart  ', async (done) => {
+    const res = await agent
+      .get('/user/cart');
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('OK');
+    done();
+  });
+
+  it('GET: Checkout cart', async (done) => {
+    const res = await agent
+      .post('/user/checkout');
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('OK');
+    done();
+  });
+
+
+  // it('POST: Add product to cart', async (done) => {
   //   const res = await agent
-  //     .put('/user/updateFromCart')
+  //     .post('/user/addProductToCart')
   //     .send({
-  //       productID: '5e7a245a8c61833fc8c2a770',
-  //       quantity: 50,
+  //       productID,
+  //       quantity: 10,
   //     });
 
-  //   expect(res.statusCode).toEqual(201);
-  //   expect(res.body.message).toMatch('Product Updated');
+  //   expect(res.statusCode).toEqual(200);
+  //   expect(res.body.message).toMatch('Product added successfully');
   //   done();
   // });
 
-  it('PUT: Update product to cart to empty product', async (done) => {
-    const res = await agent
-      .put('/user/updateFromCart')
-      .send({
-        productID,
-        quantity: 0,
-      });
+  // it('PUT: Update product to cart to empty product', async (done) => {
+  //   const res = await agent
+  //     .put('/user/updateFromCart')
+  //     .send({
+  //       productID,
+  //       quantity: 0,
+  //     });
 
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toMatch('Product Updated');
-    done();
-  });
+  //   expect(res.statusCode).toEqual(200);
+  //   expect(res.body.message).toMatch('Product Updated');
+  //   done();
+  // });
 
 
   it('POST: LOGOUT USER', async (done) => {
@@ -316,6 +336,46 @@ describe('Home', () => {
       .get(`/product/${productID}/`);
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('product');
+    done();
+  });
+
+  it('GET: GET PRODUCTS BY CATEGORY', async (done) => {
+    const res = await agent
+      .get('/product/category/men');
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('product');
+    done();
+  });
+
+  it('POST: LOGIN USER', async (done) => {
+    const res = await agent
+      .post('/user/login')
+      .send({ username: 'admin', password: '@Admin0' });
+
+    expect(res.statusCode).toEqual(200);
+    done();
+  });
+
+  it('PUT: Update Product Info', async (done) => {
+    const res = await agent
+      .put('/product/')
+      .send({
+        productID,
+        name: 'Underamor Shirt',
+        productType: 'men',
+        quantity: 50,
+        price: 25.00,
+        image: 'https://istockphoto.6q33.net/c/372642/258824/4205?u=https%3A%2F%2Fwww.istockphoto.com%2Fphoto%2Fconfidence-puts-any-outfit-together-perfectly-gm1070782274-286524454',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam recusandae fuga corporis accusantium, tenetur quos. Vel, facilis harum mollitia quidem, voluptas ea laudantium assumenda quod esse delectus unde sed ut.',
+      });
+    expect(res.statusCode).toEqual(200);
+    done();
+  });
+
+  it('DELETE: Delete product', async (done) => {
+    const res = await agent
+      .delete(`/product/${productID}`);
+    expect(res.statusCode).toEqual(200);
     done();
   });
 });
