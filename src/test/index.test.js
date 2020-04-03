@@ -18,7 +18,7 @@ const agent = request.agent(app);
 //   }
 // }
 let productID;
-async function dropAllCollections() {
+const dropAllCollections = async () => {
   const collections = Object.keys(mongoose.connection.collections);
   for (const collectionName of collections) {
     const collection = mongoose.connection.collections[collectionName];
@@ -32,7 +32,7 @@ async function dropAllCollections() {
       console.log(error.message);
     }
   }
-}
+};
 beforeAll(async () => {
   const url = `mongodb://localhost/${TEST_DB}`;
   await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
