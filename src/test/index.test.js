@@ -37,7 +37,7 @@ beforeAll(async () => {
   const url = `mongodb://localhost/${TEST_DB}`;
   await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
   await agent
-    .post('/user/register')
+    .post('/api/user/register')
     .send({
       firstName: 'Admin',
       username: 'admin',
@@ -52,7 +52,7 @@ beforeAll(async () => {
       role: 'admin',
     });
   const productAdd = await agent
-    .post('/product/')
+    .post('/api/product/')
     .send({
       name: 'Underamor Shirt',
       productType: 'men',
@@ -64,13 +64,13 @@ beforeAll(async () => {
   productID = productAdd.body.product._id;
 
   await agent
-    .delete('/user/logout');
+    .delete('/api/user/logout');
 });
 
 describe('Home', () => {
   it('GET: Return Welcome Message', async (done) => {
     const res = await agent
-      .get('/');
+      .get('/api');
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('welcome');
     done();
@@ -78,7 +78,7 @@ describe('Home', () => {
 
   it('POST: Address Validation', async (done) => {
     const res = await agent
-      .post('/address')
+      .post('/api/address')
       .send({
         address: '4800 Calhoun Rd',
         city: 'Houston',
@@ -92,7 +92,7 @@ describe('Home', () => {
 
   it('POST(FAIL): Address Validation', async (done) => {
     const res = await agent
-      .post('/address')
+      .post('/api/address')
       .send({
         city: 'Houston',
         state: 'TX',
@@ -106,7 +106,7 @@ describe('Home', () => {
 
   it('POST: Create User', async (done) => {
     const res = await agent
-      .post('/user/register')
+      .post('/api/user/register')
       .send({
         firstName: 'Test',
         username: 'test0',
@@ -127,7 +127,7 @@ describe('Home', () => {
 
   it('GET: Return current user info', async (done) => {
     const res = await agent
-      .get('/user/me');
+      .get('/api/user/me');
     expect(res.statusCode).toEqual(200);
     expect(res.body.message).toMatch('OK');
     done();
@@ -135,7 +135,7 @@ describe('Home', () => {
 
   it('POST(FAIL): Create User already logged in', async (done) => {
     const res = await agent
-      .post('/user/register')
+      .post('/api/user/register')
       .send({
         firstName: 'Test',
         username: 'test0',
@@ -156,7 +156,7 @@ describe('Home', () => {
 
   it('DELETE: LOGOUT USER', async (done) => {
     const res = await agent
-      .delete('/user/logout');
+      .delete('/api/user/logout');
     expect(res.statusCode).toEqual(200);
     expect(res.body.message).toMatch('OK');
     done();
@@ -164,7 +164,7 @@ describe('Home', () => {
 
   it('POST(FAIL): Create User already exists', async (done) => {
     const res = await agent
-      .post('/user/register')
+      .post('/api/user/register')
       .send({
         firstName: 'Test',
         username: 'test0',
@@ -185,7 +185,7 @@ describe('Home', () => {
 
   it('POST(FAIL): LOGIN USER wrong password', async (done) => {
     const res = await agent
-      .post('/user/login')
+      .post('/api/user/login')
       .send({ username: 'test0', password: '@Testing00' });
 
     expect(res.statusCode).toEqual(401);
@@ -196,7 +196,7 @@ describe('Home', () => {
 
   it('POST(FAIL): LOGIN USER wrong username', async (done) => {
     const res = await agent
-      .post('/user/login')
+      .post('/api/user/login')
       .send({ username: 'test', password: '@Testing0' });
 
     expect(res.statusCode).toEqual(401);
@@ -206,7 +206,7 @@ describe('Home', () => {
 
   it('POST(FAIL): LOGIN USER wrong username and password', async (done) => {
     const res = await agent
-      .post('/user/login')
+      .post('/api/user/login')
       .send({ username: 'test', password: '@Testing00' });
 
     expect(res.statusCode).toEqual(401);
@@ -216,7 +216,7 @@ describe('Home', () => {
 
   it('POST: LOGIN USER', async (done) => {
     const res = await agent
-      .post('/user/login')
+      .post('/api/user/login')
       .send({ username: 'test0', password: '@Testing0' });
 
     expect(res.statusCode).toEqual(200);
@@ -225,7 +225,7 @@ describe('Home', () => {
 
   it('PUT: Update User', async (done) => {
     const res = await agent
-      .put('/user/update')
+      .put('/api/user/update')
       .send({
         firstName: 'Test',
         username: 'test0',
@@ -244,7 +244,7 @@ describe('Home', () => {
 
   it('POST: Add product to cart', async (done) => {
     const res = await agent
-      .post('/user/addProductToCart')
+      .post('/api/user/addProductToCart')
       .send({
         productID,
         quantity: 10,
@@ -257,7 +257,7 @@ describe('Home', () => {
 
   it('PUT: Update product to cart', async (done) => {
     const res = await agent
-      .put('/user/updateFromCart')
+      .put('/api/user/updateFromCart')
       .send({
         productID,
         quantity: 50,
@@ -270,7 +270,7 @@ describe('Home', () => {
 
   it('GET: Get items in cart  ', async (done) => {
     const res = await agent
-      .get('/user/cart');
+      .get('/api/user/cart');
 
     expect(res.statusCode).toEqual(200);
     expect(res.body.message).toMatch('OK');
@@ -279,7 +279,7 @@ describe('Home', () => {
 
   it('POST: Checkout cart', async (done) => {
     const res = await agent
-      .post('/user/checkout');
+      .post('/api/user/checkout');
 
     expect(res.statusCode).toEqual(200);
     expect(res.body.message).toMatch('OK');
@@ -289,7 +289,7 @@ describe('Home', () => {
 
   // it('POST: Add product to cart', async (done) => {
   //   const res = await agent
-  //     .post('/user/addProductToCart')
+  //     .post('/api/user/addProductToCart')
   //     .send({
   //       productID,
   //       quantity: 10,
@@ -302,7 +302,7 @@ describe('Home', () => {
 
   // it('PUT: Update product to cart to empty product', async (done) => {
   //   const res = await agent
-  //     .put('/user/updateFromCart')
+  //     .put('/api/user/updateFromCart')
   //     .send({
   //       productID,
   //       quantity: 0,
@@ -314,7 +314,7 @@ describe('Home', () => {
   // });
   it('DELETE: Delete product', async (done) => {
     const res = await agent
-      .delete(`/product/${productID}`);
+      .delete(`/api/product/${productID}`);
     expect(res.statusCode).toEqual(401);
     expect(res.body.message).toMatch('Not Authorized!');
     done();
@@ -322,7 +322,7 @@ describe('Home', () => {
 
   it('POST: LOGOUT USER', async (done) => {
     const res = await agent
-      .delete('/user/logout');
+      .delete('/api/user/logout');
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('message');
@@ -331,7 +331,7 @@ describe('Home', () => {
 
   it('GET: Checkout cart', async (done) => {
     const res = await agent
-      .post('/user/checkout');
+      .post('/api/user/checkout');
 
     expect(res.statusCode).toEqual(401);
     expect(res.body.message).toMatch('You must be logged in');
@@ -340,7 +340,7 @@ describe('Home', () => {
 
   it('GET: GET ALL PRODUCTS', async (done) => {
     const res = await agent
-      .get('/product/');
+      .get('/api/product/');
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('products');
     done();
@@ -348,7 +348,7 @@ describe('Home', () => {
 
   it('GET: GET A SPECIFIC PRODUCTS', async (done) => {
     const res = await agent
-      .get(`/product/${productID}/`);
+      .get(`/api/product/${productID}/`);
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('product');
     done();
@@ -356,7 +356,7 @@ describe('Home', () => {
 
   it('GET: GET PRODUCTS BY CATEGORY', async (done) => {
     const res = await agent
-      .get('/product/category/men');
+      .get('/api/product/category/men');
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('product');
     done();
@@ -364,7 +364,7 @@ describe('Home', () => {
 
   it('POST: LOGIN USER', async (done) => {
     const res = await agent
-      .post('/user/login')
+      .post('/api/user/login')
       .send({ username: 'admin', password: '@Admin0' });
 
     expect(res.statusCode).toEqual(200);
@@ -373,7 +373,7 @@ describe('Home', () => {
 
   it('PUT: Update Product Info', async (done) => {
     const res = await agent
-      .put('/product/')
+      .put('/api/product/')
       .send({
         productID,
         name: 'Underamor Shirt',
@@ -389,7 +389,7 @@ describe('Home', () => {
 
   it('DELETE: Delete product', async (done) => {
     const res = await agent
-      .delete(`/product/${productID}`);
+      .delete(`/api/product/${productID}`);
     expect(res.statusCode).toEqual(200);
     done();
   });

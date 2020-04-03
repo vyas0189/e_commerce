@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { admin, catchAsync, serverError } from '../middleware';
+import { admin, catchAsync } from '../middleware';
 import Product from '../models/Product';
 import {
  productIDSchema, productSchema, productTypeSchema, productUpdateSchema, validate,
@@ -47,7 +47,7 @@ router.put('/', admin, catchAsync(async (req, res) => {
         const pro = await Product.findOneAndUpdate({ _id: productID }, { $set: p });
         return res.status(200).json({ message: 'OK', pro });
     }
-    return serverError;
+    return res.status(500).json({ message: 'Server Error' });
 }));
 
 router.delete('/:productID', admin, catchAsync(async (req, res) => {
@@ -58,7 +58,7 @@ router.delete('/:productID', admin, catchAsync(async (req, res) => {
         const p = await Product.findByIdAndRemove({ _id: productID });
         return res.status(200).json({ message: 'OK', p });
     }
-    return serverError;
+    return res.status(500).json({ message: 'Server Error' });
 }));
 
 router.get('/category/:productType', catchAsync(async (req, res) => {

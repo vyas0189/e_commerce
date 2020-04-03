@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import axios from 'axios';
+import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from '../pages/Home';
 import Login from '../pages/Login';
@@ -6,6 +7,14 @@ import Register from '../pages/Register';
 import Navbar from './Navbar';
 
 const App = () => {
+
+  useEffect(() => {
+    (async () => {
+      const res = await axios.get('/api/product');
+      console.log(res.data);
+
+    })()
+  }, [])
   return (
     <Router>
       <Fragment>
