@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import { logIn, logOut } from '../auth';
-import {
- auth, catchAsync, guest, serverError,
-} from '../middleware';
+import { auth, catchAsync, guest } from '../middleware';
 import Product from '../models/Product';
 import User from '../models/User';
 import {
@@ -77,7 +75,7 @@ router.put('/update', auth, catchAsync(async (req, res) => {
         });
         return res.status(200).json({ message: 'OK', u });
     }
-    return serverError;
+    return res.status(500).json({ message: 'Server Error' });
 }));
 
 router.post('/addProductToCart', auth, catchAsync(async (req, res) => {
@@ -107,7 +105,7 @@ router.post('/addProductToCart', auth, catchAsync(async (req, res) => {
             return res.status(200).json({ message: 'Product added successfully' });
         }
     }
-    return serverError;
+    return res.status(500).json({ message: 'Server Error' });
 }));
 
 router.put('/updateFromCart', auth, catchAsync(async (req, res) => {
@@ -129,7 +127,7 @@ router.put('/updateFromCart', auth, catchAsync(async (req, res) => {
 
         return res.status(201).json({ message: 'Unable to Update Product' });
     }
-    return serverError;
+    return res.status(500).json({ message: 'Server Error' });
 }));
 
 router.get('/cart', auth, catchAsync(async (req, res) => {
@@ -137,7 +135,7 @@ router.get('/cart', auth, catchAsync(async (req, res) => {
     if (user) {
         await User.findOne({ _id: user.id }).populate('products.productID').exec((err, product) => {
             if (err) {
-                return serverError;
+                return res.status(500).json({ message: 'Server Error' });
             }
             return res.status(200).json({ message: 'OK', cart: product.products });
         });

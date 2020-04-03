@@ -63,13 +63,13 @@ if (IN_PROD) {
     });
 }
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.json({ welcome: 'E-Commerce 🛒' });
 });
 
-app.use('/product', product);
-app.use('/address', address);
-app.use('/user', user);
+app.use('/api/product', product);
+app.use('/api/address', address);
+app.use('/api/user', user);
 
 app.use((req, res, next) => {
     const error = new Error(`Not Found - ${req.originalUrl}`);
