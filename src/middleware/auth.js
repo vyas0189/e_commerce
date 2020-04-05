@@ -7,14 +7,6 @@ export const guest = (req, res, next) => {
     next();
 };
 
-export const auth = (req, res, next) => {
-    if (!isLoggedIn(req)) {
-        return res.status(401).json({ message: 'You must be logged in' });
-    }
-
-    next();
-};
-
 export const admin = async (req, res, next) => {
     if (!(await isAdmin(req))) {
         return res.status(401).json({ message: 'Not Authorized!' });

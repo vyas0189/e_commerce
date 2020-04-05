@@ -1,30 +1,31 @@
 import { Router } from 'express';
 import { logIn, logOut } from '../auth';
-import { auth, catchAsync, guest } from '../middleware';
+import { admin, catchAsync, guest } from '../middleware';
 import Product from '../models/Product';
 import User from '../models/User';
-import {
- loginSchema, signUpSchema, updateUserSchema, validate,
-} from '../validation';
+import { loginSchema, signUpSchema, validate } from '../validation';
 
 const router = Router();
 
-router.get('/me', auth, catchAsync(async (req, res) => {
-    await User.findById(req.session.userId).populate('populate').exec((err, data) => {
-        if (err) {
-            return res.status(401).json({ message: 'Cannot find user' });
+router.get('/me', admin, catchAsync(async (req, res) => {
+    try {
+        const adminUser = await User.findById(req.session.userId);
+        if (adminUser) {
+            return res.status(200).json({ message: 'OK', user: adminUser });
         }
-        return res.status(200).json({ message: 'OK', data });
-    });
+        return res.status(403).json({ message: 'Not Found' });
+    } catch (err) {
+        res.status(500).json({ message: 'Server Error' });
+    }
 }));
 
 router.post('/register', guest, catchAsync(async (req, res) => {
     await validate(signUpSchema, req.body, req, res);
     const {
-        email, firstName, lastName, address, username, password, city, state, zip, address2, role,
+        username, password, role,
     } = req.body;
 
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ username });
 
     if (user) {
         return res
@@ -32,7 +33,7 @@ router.post('/register', guest, catchAsync(async (req, res) => {
             .json({ message: 'User already exists' });
     }
     user = await User.create({
-        email, firstName, lastName, address, username, password, city, state, zip, address2, role,
+        username, password, role,
     });
 
     logIn(req, user.id);
@@ -55,115 +56,29 @@ router.post('/login', guest, catchAsync(async (req, res) => {
     res.json({ message: 'OK', user: user.id });
 }));
 
-router.delete('/logout', auth, catchAsync(async (req, res) => {
+router.delete('/logout', admin, catchAsync(async (req, res) => {
     await logOut(req, res);
     return res.status(200).json({ message: 'OK' });
 }));
 
-router.put('/update', auth, catchAsync(async (req, res) => {
-    await validate(updateUserSchema, req.body, req, res);
-    const {
-        email, firstName, lastName, address, username, password, city, state, zip, address2,
-    } = req.body;
-    const { userId } = req.session;
-    const user = User.findById(userId);
-    if (user) {
-        const u = await User.findOneAndUpdate({ _id: userId }, {
-            $set: {
-                email, firstName, lastName, address, username, password, city, state, zip, address2,
-            },
-        });
-        return res.status(200).json({ message: 'OK', u });
-    }
-    return res.status(500).json({ message: 'Server Error' });
-}));
-
-router.post('/addProductToCart', auth, catchAsync(async (req, res) => {
-    const { productID, quantity } = req.body;
-    const user = await User.findById(req.session.userId);
-    const product = await Product.findById(productID);
-
-    if (user) {
-        if (product && product.quantity > 0) {
-            const getProduct = user.products.find((p) => p.productID.equals(productID));
-
-            if (getProduct) {
-                const item = getProduct.productID;
-                const itemQuantity = getProduct.quantity + quantity;
-                await User.updateOne({ _id: user.id, 'products.productID': item }, { $set: { 'products.$.quantity': itemQuantity } });
-            } else {
-                const { products } = user;
-                await User.findOneAndUpdate({ _id: user.id }, {
-                    $set: {
-                        products: [...products, {
-                            productID,
-                            quantity,
-                        }],
-                    },
-                });
-            }
-            return res.status(200).json({ message: 'Product added successfully' });
-        }
-    }
-    return res.status(500).json({ message: 'Server Error' });
-}));
-
-router.put('/updateFromCart', auth, catchAsync(async (req, res) => {
-    const { userId } = req.session;
-    const { productID, quantity } = req.body;
-    const user = await User.findOne({ _id: userId, 'products.productID': productID });
-
-    if (user) {
-        const product = await Product.findById(productID);
-
-        if (product) {
-            await User.findOneAndUpdate({ _id: userId, 'products.productID': productID }, { $set: { 'products.$.quantity': quantity } });
-            if (quantity <= 0) {
-                await User.updateOne({ _id: userId, 'products.productID': productID }, { $pull: { products: { productID } } });
-            }
-            return res.status(200).json({ message: 'Product Updated' });
-        }
-        // await User.updateOne({ _id: userId, 'products.productID': productID }, { $pull: { products: { productID } } });
-
-        return res.status(201).json({ message: 'Unable to Update Product' });
-    }
-    return res.status(500).json({ message: 'Server Error' });
-}));
-
-router.get('/cart', auth, catchAsync(async (req, res) => {
-    const user = await User.findById(req.session.userId);
-    if (user) {
-        await User.findOne({ _id: user.id }).populate('products.productID').exec((err, product) => {
-            if (err) {
-                return res.status(500).json({ message: 'Server Error' });
-            }
-            return res.status(200).json({ message: 'OK', cart: product.products });
-        });
-    }
-}));
-
-router.post('/checkout', auth, catchAsync(async (req, res) => {
-    const user = await User.findById(req.session.userId);
+router.post('/checkout', catchAsync(async (req, res) => {
     const err = [];
-    if (user && user.products.length > 0) {
-        await Promise.all(user.products.map(async (product) => {
-            const p = await Product.findById(product.productID);
+    const { products } = req.body;
+    await Promise.all(products.map(async (product) => {
+        const p = await Product.findById(product.productID);
 
-            if (p.quantity > 0 && (p.quantity - product.quantity) >= 0) {
-                await Product.findOneAndUpdate({ _id: product.productID }, { $set: { quantity: p.quantity - product.quantity } });
-                await User.updateOne({ _id: user.id, 'products._id': product.id }, { $pull: { products: { productID: product.productID } } });
-            } else {
-                return err.push(`Item, ${p.name}, is sold out, Quantity available: ${p.quantity}`);
-            }
-        }));
-
-        if (err.length > 0) {
-            return res.status(201).json({ message: err });
+        if (p.quantity > 0 && (p.quantity - product.quantity) >= 0) {
+            await Product.findOneAndUpdate({ _id: product.productID }, { $set: { quantity: p.quantity - product.quantity } });
+        } else {
+            return err.push(`Item, ${p.name}, is sold out, Quantity available: ${p.quantity}`);
         }
+    }));
 
-        return res.status(200).json({ message: 'OK' });
+    if (err.length > 0) {
+        return res.status(201).json({ message: err });
     }
-    return res.status(200).json({ message: 'Empty cart' });
+
+    return res.status(200).json({ message: 'OK' });
 }));
 
 export default router;
