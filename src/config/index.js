@@ -33,7 +33,6 @@ export const {
 export const IN_PROD = NODE_ENV === 'production';
 
 export const MONGO_URI = IN_PROD ? process.env.MONGO_URI : `mongodb://${MONGO_HOST}/${MONGO_DATABASE}`;
-
 export const SESSION_OPTIONS = {
     secret: SESSION_SECRET,
     name: SESSION_NAME,
@@ -56,12 +55,6 @@ app.use(helmet());
 app.use(json({ extended: false }));
 app.use(session({ ...SESSION_OPTIONS }));
 
-if (IN_PROD) {
-    app.use(express.static(join(__dirname, '../../client/build')));
-    app.get('*', (req, res) => {
-        res.sendFile(join(__dirname, '../../client/build', 'index.html'));
-    });
-}
 
 app.get('/api', (req, res) => {
     res.json({ welcome: 'E-Commerce 🛒' });
@@ -84,5 +77,12 @@ app.use((error, req, res) => {
         stack: IN_PROD ? '🥞' : error.stack,
     });
 });
+
+if (IN_PROD) {
+    app.use(express.static(join(__dirname, '../../client/build')));
+    app.get('*', (req, res) => {
+        res.sendFile(join(__dirname, '../../client/build', 'index.html'));
+    });
+}
 
 export default app;

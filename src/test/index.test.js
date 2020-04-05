@@ -39,16 +39,8 @@ beforeAll(async () => {
   await agent
     .post('/api/user/register')
     .send({
-      firstName: 'Admin',
       username: 'admin',
       password: '@Admin0',
-      lastName: 'Testing',
-      email: 'admin@gmail.com',
-      address: '1111 Test Dr',
-      address2: 'APT 12',
-      city: 'TestCity',
-      state: 'TX',
-      zip: '7777',
       role: 'admin',
     });
   const productAdd = await agent
@@ -104,53 +96,38 @@ describe('Home', () => {
     done();
   });
 
-  it('POST: Create User', async (done) => {
+  it('POST: LOGIN USER', async (done) => {
     const res = await agent
-      .post('/api/user/register')
+      .post('/api/user/login')
       .send({
-        firstName: 'Test',
-        username: 'test0',
-        password: '@Testing0',
-        lastName: 'Testing',
-        email: 'test@gmail.com',
-        address: '1111 Test Dr',
-        address2: 'APT 12',
-        city: 'TestCity',
-        state: 'TX',
-        zip: '7777',
-        role: 'user',
+        username: 'admin',
+        password: '@Admin0',
       });
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty('message');
-    done();
-  });
 
-  it('GET: Return current user info', async (done) => {
-    const res = await agent
-      .get('/api/user/me');
     expect(res.statusCode).toEqual(200);
     expect(res.body.message).toMatch('OK');
+    expect(res.body).toHaveProperty('user');
     done();
   });
 
-  it('POST(FAIL): Create User already logged in', async (done) => {
+  it('POST(FAIL): LOGIN USER, BUT USER IS ALREADY LOGGED IN', async (done) => {
     const res = await agent
-      .post('/api/user/register')
-      .send({
-        firstName: 'Test',
-        username: 'test0',
-        password: '@Testing0',
-        lastName: 'Testing',
-        email: 'test@gmail.com',
-        address: '1111 Test Dr',
-        address2: 'APT 12',
-        city: 'TestCity',
-        state: 'TX',
-        zip: '7777',
-        role: 'user',
-      });
+      .post('/api/user/login')
+      .send({ username: 'admin', password: '@Admin0' });
+
     expect(res.statusCode).toEqual(401);
+    expect(res.body).toHaveProperty('message');
     expect(res.body.message).toMatch('You are already logged in');
+    done();
+  });
+
+  it('GET: ADMIN INFO', async (done) => {
+    const res = await agent
+      .get('/api/user/me');
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('OK');
+    expect(res.body).toHaveProperty('user');
     done();
   });
 
@@ -161,32 +138,25 @@ describe('Home', () => {
     expect(res.body.message).toMatch('OK');
     done();
   });
-
-  it('POST(FAIL): Create User already exists', async (done) => {
+  it('POST(FAIL): REGISTER USER', async (done) => {
     const res = await agent
       .post('/api/user/register')
       .send({
-        firstName: 'Test',
-        username: 'test0',
-        password: '@Testing0',
-        lastName: 'Testing',
-        email: 'test@gmail.com',
-        address: '1111 Test Dr',
-        address2: 'APT 12',
-        city: 'TestCity',
-        state: 'TX',
-        zip: '7777',
-        role: 'user',
+        username: 'admin',
+        password: '@Admin0',
+        role: 'admin',
       });
     expect(res.statusCode).toEqual(500);
+    expect(res.body).toHaveProperty('message');
     expect(res.body.message).toMatch('User already exists');
+
     done();
   });
 
   it('POST(FAIL): LOGIN USER wrong password', async (done) => {
     const res = await agent
       .post('/api/user/login')
-      .send({ username: 'test0', password: '@Testing00' });
+      .send({ username: 'admin', password: '@Testing00' });
 
     expect(res.statusCode).toEqual(401);
 
@@ -197,7 +167,7 @@ describe('Home', () => {
   it('POST(FAIL): LOGIN USER wrong username', async (done) => {
     const res = await agent
       .post('/api/user/login')
-      .send({ username: 'test', password: '@Testing0' });
+      .send({ username: 'test', password: '@Admin0' });
 
     expect(res.statusCode).toEqual(401);
     expect(res.body.message).toMatch('Incorrect email or password');
@@ -217,106 +187,9 @@ describe('Home', () => {
   it('POST: LOGIN USER', async (done) => {
     const res = await agent
       .post('/api/user/login')
-      .send({ username: 'test0', password: '@Testing0' });
+      .send({ username: 'admin', password: '@Admin0' });
 
     expect(res.statusCode).toEqual(200);
-    done();
-  });
-
-  it('PUT: Update User', async (done) => {
-    const res = await agent
-      .put('/api/user/update')
-      .send({
-        firstName: 'Test',
-        username: 'test0',
-        lastName: 'Testing',
-        email: 'testing@gmail.com',
-        address: '1111 Test Dr',
-        address2: 'APT 100',
-        city: 'TestCity',
-        state: 'TX',
-        zip: '7777',
-      });
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty('u');
-    done();
-  });
-
-  it('POST: Add product to cart', async (done) => {
-    const res = await agent
-      .post('/api/user/addProductToCart')
-      .send({
-        productID,
-        quantity: 10,
-      });
-
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toMatch('Product added successfully');
-    done();
-  });
-
-  it('PUT: Update product to cart', async (done) => {
-    const res = await agent
-      .put('/api/user/updateFromCart')
-      .send({
-        productID,
-        quantity: 50,
-      });
-
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toMatch('Product Updated');
-    done();
-  });
-
-  it('GET: Get items in cart  ', async (done) => {
-    const res = await agent
-      .get('/api/user/cart');
-
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toMatch('OK');
-    done();
-  });
-
-  it('POST: Checkout cart', async (done) => {
-    const res = await agent
-      .post('/api/user/checkout');
-
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toMatch('OK');
-    done();
-  });
-
-
-  // it('POST: Add product to cart', async (done) => {
-  //   const res = await agent
-  //     .post('/api/user/addProductToCart')
-  //     .send({
-  //       productID,
-  //       quantity: 10,
-  //     });
-
-  //   expect(res.statusCode).toEqual(200);
-  //   expect(res.body.message).toMatch('Product added successfully');
-  //   done();
-  // });
-
-  // it('PUT: Update product to cart to empty product', async (done) => {
-  //   const res = await agent
-  //     .put('/api/user/updateFromCart')
-  //     .send({
-  //       productID,
-  //       quantity: 0,
-  //     });
-
-  //   expect(res.statusCode).toEqual(200);
-  //   expect(res.body.message).toMatch('Product Updated');
-  //   done();
-  // });
-  it('DELETE: Delete product', async (done) => {
-    const res = await agent
-      .delete(`/api/product/${productID}`);
-    expect(res.statusCode).toEqual(401);
-    expect(res.body.message).toMatch('Not Authorized!');
     done();
   });
 
@@ -329,12 +202,41 @@ describe('Home', () => {
     done();
   });
 
-  it('GET: Checkout cart', async (done) => {
+  it('DELETE: Delete product', async (done) => {
     const res = await agent
-      .post('/api/user/checkout');
-
+      .delete(`/api/product/${productID}`);
     expect(res.statusCode).toEqual(401);
-    expect(res.body.message).toMatch('You must be logged in');
+    expect(res.body.message).toMatch('Not Authorized!');
+    done();
+  });
+
+  it('POST: Checkout cart', async (done) => {
+    const res = await agent
+      .post('/api/user/checkout')
+      .send({
+        products: [{
+          productID,
+          quantity: 10,
+        }],
+      });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('OK');
+    done();
+  });
+
+  it('POST(FAIL): Checkout cart', async (done) => {
+    const res = await agent
+      .post('/api/user/checkout')
+      .send({
+        products: [{
+          productID,
+          quantity: 100,
+        }],
+      });
+
+    expect(res.statusCode).toEqual(201);
+    expect(res.body).toHaveProperty('message');
     done();
   });
 
@@ -351,6 +253,15 @@ describe('Home', () => {
       .get(`/api/product/${productID}/`);
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('product');
+    done();
+  });
+
+  it('GET(FAIL): GET A SPECIFIC PRODUCTS', async (done) => {
+    const res = await agent
+      .get('/api/product/5e8a0af04b5c8e1594bcb929/');
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('message');
+    expect(res.body.message).toMatch('Product not found');
     done();
   });
 

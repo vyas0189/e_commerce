@@ -5,14 +5,15 @@
   "license": "MIT",
   "scripts": {
     "client": "cd client && yarn start",
-    "start": "babel-node index.js",
+    "start:server": "babel-node index.js",
+    "server:prod": "cross-env NODE_ENV=production babel-node index.js",
     "server": "nodemon index.js --exec babel-node index.js",
     "build": "yarn && cd client && yarn && yarn build",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "test:coverage": "jest --coverage",
     "test:coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "dev": "cross-env NODE_ENV=development concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "prod": "cross-env NODE_ENV=production concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "prod": "cross-env NODE_ENV=production concurrently --kill-others-on-fail \"yarn start:server\" \"yarn client\"",
     "eslint": "eslint ./src/ && eslint index.js",
     "eslint-fix": "eslint ./src/ --fix && eslint index.js --fix",
     "heroku-postbuild": "cd client && yarn --only=dev --no-shrinkwrap && yarn build"
@@ -60,7 +61,8 @@
       "/node_modules/",
       "/client/",
       "/coverage/",
-      "/src/index.js"
+      "/src/index.js",
+      "/src/config/index.js"
     ],
     "collectCoverageFrom": [
       "**/*.js",
