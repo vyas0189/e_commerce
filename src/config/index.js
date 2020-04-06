@@ -6,7 +6,7 @@ import session from 'express-session';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import address from '../routes/address';
 import product from '../routes/product';
 import user from '../routes/user';
@@ -81,7 +81,7 @@ app.use((error, req, res) => {
 if (IN_PROD) {
     app.use(express.static(join(__dirname, '../../client/build')));
     app.get('*', (req, res) => {
-        res.sendFile(join(__dirname, '../../client/build', 'index.html'));
+        res.sendFile(resolve(__dirname, '../../client/build', 'index.html'));
     });
 }
 
