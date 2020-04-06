@@ -64,19 +64,19 @@ app.use('/api/product', product);
 app.use('/api/address', address);
 app.use('/api/user', user);
 
-app.use((req, res, next) => {
-    const error = new Error(`Not Found - ${req.originalUrl}`);
-    res.status(404);
-    next(error);
-});
-app.use((error, req, res) => {
-    const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-    res.status(statusCode);
-    res.json({
-        message: error.message,
-        stack: IN_PROD ? '🥞' : error.stack,
-    });
-});
+// app.use((req, res, next) => {
+//     const error = new Error(`Not Found - ${req.originalUrl}`);
+//     res.status(404);
+//     next(error);
+// });
+// app.use((error, req, res) => {
+//     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+//     res.status(statusCode);
+//     res.json({
+//         message: error.message,
+//         stack: IN_PROD ? '🥞' : error.stack,
+//     });
+// });
 
 if (IN_PROD) {
     app.use(express.static(join(__dirname, '../../client/build')));

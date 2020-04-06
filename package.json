@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "client": "cd client && yarn start",
+    "client": "yarn start --prefix client",
     "start": "babel-node index.js",
     "server": "nodemon index.js --exec babel-node index.js",
     "build": "yarn && cd client && yarn && yarn build",
