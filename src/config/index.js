@@ -33,12 +33,12 @@ export const {
 export const IN_PROD = NODE_ENV === 'production';
 
 export const MONGO_URI = IN_PROD ? process.env.MONGO_URI : `mongodb://${MONGO_HOST}/${MONGO_DATABASE}`;
+
 export const SESSION_OPTIONS = {
     secret: SESSION_SECRET,
     name: SESSION_NAME,
     cookie: {
         maxAge: +SESSION_IDLE_TIMEOUT,
-        secure: IN_PROD,
         sameSite: true,
     },
     rolling: true,

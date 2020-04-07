@@ -4,9 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "client": "yarn start --prefix client",
+    "client": "cd client && yarn start",
     "start": "babel-node index.js",
     "server": "nodemon index.js --exec babel-node index.js",
+    "server:prod": "cross-env NODE_ENV=production nodemon index.js --exec babel-node index.js",
     "build": "yarn && cd client && yarn && yarn build",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "test:coverage": "jest --coverage",
