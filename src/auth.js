@@ -1,5 +1,5 @@
 import { SESSION_NAME } from './config';
-import User from './models/User';
+import Admin from './models/Admin';
 
 export const isLoggedIn = (req) => !!req.session.userId;
 
@@ -21,7 +21,7 @@ export const logOut = (req, res) => new Promise((resolve, reject) => {
 
 export const isAdmin = async (req) => {
     if (req.session.userId) {
-        const user = await User.findById(req.session.userId);
+        const user = await Admin.findById(req.session.userId);
         if (user) {
             return user.role === 'admin';
         }

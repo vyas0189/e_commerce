@@ -1,15 +1,15 @@
 import { Router } from 'express';
 import { logIn, logOut } from '../auth';
 import { admin, catchAsync, guest } from '../middleware';
+import Admin from '../models/Admin';
 import Product from '../models/Product';
-import User from '../models/User';
 import { loginSchema, signUpSchema, validate } from '../validation';
 
 const router = Router();
 
 router.get('/me', admin, catchAsync(async (req, res) => {
     try {
-        const adminUser = await User.findById(req.session.userId);
+        const adminUser = await Admin.findById(req.session.userId);
         if (adminUser) {
             return res.status(200).json({ message: 'OK', user: adminUser });
         }
@@ -25,14 +25,14 @@ router.post('/register', guest, catchAsync(async (req, res) => {
         username, password, role,
     } = req.body;
 
-    let user = await User.findOne({ username });
+    let user = await Admin.findOne({ username });
 
     if (user) {
         return res
             .status(500)
             .json({ message: 'User already exists' });
     }
-    user = await User.create({
+    user = await Admin.create({
         username, password, role,
     });
 
@@ -45,7 +45,7 @@ router.post('/login', guest, catchAsync(async (req, res) => {
 
     const { username, password } = req.body;
 
-    const user = await User.findOne({ username });
+    const user = await Admin.findOne({ username });
 
     if (!user || !(await user.comparePassword(password))) {
         return res.status(401).json({ message: 'Incorrect email or password' });
