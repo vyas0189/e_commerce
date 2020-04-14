@@ -1,8 +1,10 @@
+import adminModel from './admin';
 import productModel from './product';
 
 
 const model = {
-    products: productModel
+    products: productModel,
+    admin: adminModel
 }
 
 export default model;

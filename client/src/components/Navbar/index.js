@@ -1,22 +1,32 @@
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import React from 'react';
 import { Navbar } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import "./Navbar.css";
 
+const NavbarComponent = () => {
+    const history = useHistory();
+    const logout = useStoreActions(actions => actions.admin.logout)
+    const loading = useStoreState(state => state.admin.loading)
+    const isAuthenticated = useStoreState(state => state.admin.isAuthenticated);
 
-const adminNavbar = () => {
+    const logoutUser = () => {
+        logout();
+        history.push('/')
+    }
 
-}
+    const adminNavbar = () => {
+        return (
+            <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                    <i onClick={logoutUser} className="nav-link">Logout</i>
+                </li>
+            </ul>
+        )
+    }
 
-const guestNavbar = () => {
-    return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Link to="/">
-            <Navbar.Brand>React-Bootstrap</Navbar.Brand>
-        </Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-
+    const guestNavbar = () => {
+        return (
             <ul className="navbar-nav ml-auto">
                 <li className="nav-item dropdown">
                     <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
@@ -36,12 +46,20 @@ const guestNavbar = () => {
                     <Link to='/cart' className="nav-link">Cart</Link>
                 </li>
             </ul>
-        </Navbar.Collapse>
-    </Navbar >
+        )
+    }
+
+    return (
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+            <Link to="/">
+                <Navbar.Brand>React-Bootstrap</Navbar.Brand>
+            </Link>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+                {!loading && isAuthenticated ? adminNavbar() : guestNavbar()}
+            </Navbar.Collapse>
+        </Navbar >
     )
-}
-const NavbarComponent = () => {
-   return guestNavbar()
 }
 
 export default NavbarComponent
