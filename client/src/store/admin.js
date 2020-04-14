@@ -11,7 +11,7 @@ const adminModel = {
         action.isLoading(true);
 
         try {
-            const res = await axios.get('/user/me');
+            const res = await axios.get('/api/user/me');
 
             if (res.status === 200) {
                 action.setAuthenticated(true)
@@ -27,7 +27,7 @@ const adminModel = {
         action.isLoading(true);
 
         try {
-            const res = await axios.post('/user/login', { username, password });
+            const res = await axios.post('/api/user/login', { username, password });
 
             if (res.status === 200) {
                 action.setAuthenticated(true)
@@ -43,7 +43,7 @@ const adminModel = {
         action.isLoading(true);
 
         try {
-            const res = await axios.delete('/user/logout');
+            const res = await axios.delete('/api/user/logout');
 
             if (res.status === 200) {
                 action.setAuthenticated(false)
