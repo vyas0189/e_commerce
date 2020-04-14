@@ -13,7 +13,7 @@ const productModel = {
         action.isLoading(true);
 
         try {
-            const res = await axios.get('/product');
+            const res = await axios.get('/api/product');
 
             if (res.status === 200) {
                 action.setProducts(res.data.products);
@@ -29,7 +29,7 @@ const productModel = {
         action.isLoading(true);
 
         try {
-            const res = await axios.get(`/product/${productID}`);
+            const res = await axios.get(`/api/product/${productID}`);
 
             if (res.status === 200) {
                 action.setProduct(res.data.product);
@@ -46,7 +46,7 @@ const productModel = {
         try {
             console.log(category);
 
-            const res = await axios.get(`/product/category/${category}`);
+            const res = await axios.get(`/api/product/category/${category}`);
             if (res.status === 200) {
                 console.table(res.data.product)
                 action.setProducts(res.data.product);
