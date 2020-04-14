@@ -1,15 +1,13 @@
 import axios from 'axios';
 import { Router } from 'express';
-import {
- ADDRESS_ACCESS_LICENSE_NUMBER, ADDRESS_PASSWORD, ADDRESS_URL, ADDRESS_USERNAME,
-} from '../config';
+import { ADDRESS_ACCESS_LICENSE_NUMBER, ADDRESS_PASSWORD, ADDRESS_URL, ADDRESS_USERNAME } from '../config';
 import { catchAsync } from '../middleware';
-import { addressValidator, validate } from '../validation';
+import { addressValidator } from '../validation';
 
 const router = Router();
 
 router.post('/', catchAsync(async (req, res) => {
-    await validate(addressValidator, req.body, req, res);
+    await addressValidator.validateAsync(req.body, { abortEarly: false });
 
     const configAddress = {
         headers: {
