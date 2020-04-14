@@ -92,7 +92,7 @@ describe('Home', () => {
       });
 
     expect(res.statusCode).toEqual(500);
-    expect(res.body.message).toMatch('Unable to validate');
+    expect(res.body.message).toMatch('Invalid Address');
     done();
   });
 

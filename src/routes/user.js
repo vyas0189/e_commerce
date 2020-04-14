@@ -3,7 +3,7 @@ import { logIn, logOut } from '../auth';
 import { admin, catchAsync, guest } from '../middleware';
 import Admin from '../models/Admin';
 import Product from '../models/Product';
-import { loginSchema, signUpSchema, validate } from '../validation';
+import { loginSchema, signUpSchema } from '../validation';
 
 const router = Router();
 
@@ -20,7 +20,7 @@ router.get('/me', admin, catchAsync(async (req, res) => {
 }));
 
 router.post('/register', guest, catchAsync(async (req, res) => {
-    await validate(signUpSchema, req.body, req, res);
+    await signUpSchema.validateAsync(req.body, { abortEarly: false });
     const {
         username, password, role,
     } = req.body;
@@ -41,7 +41,7 @@ router.post('/register', guest, catchAsync(async (req, res) => {
 }));
 
 router.post('/login', guest, catchAsync(async (req, res) => {
-    await validate(loginSchema, req.body, req, res);
+    await loginSchema.validateAsync(req.body, { abortEarly: false });
 
     const { username, password } = req.body;
 
