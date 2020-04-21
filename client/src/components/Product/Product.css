@@ -1,0 +1,9 @@
+.test {
+    float: left;
+    height: 10px;
+}
+
+.second {
+    display: inline-block;
+    font-family: 'Manrope', sans-serif;
+}
