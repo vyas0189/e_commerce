@@ -22,10 +22,15 @@ const ProductComponent = () => {
         <div>
             {loading ? <h1>Loading...</h1> :
             (<div>
-                <h1>{product.name}</h1>
-                <Image src = {product.image} fluid rounded/>
-                <h1>{product.price}</h1>
+                <Image class="test" src = {product.image} fluid rounded/>
+                <div class="second">
+                    <h1>{product.name}</h1>
+                    <h1>{product.price}</h1>
+                </div>
                 <h1>{product.description}</h1>
+{/*                 <h1 class="second">{product.name}</h1>
+                <h1 class="second">{product.price}</h1>
+                <h1>{product.description}</h1> */}
             </div>
             )
             }
