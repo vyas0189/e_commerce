@@ -255,6 +255,19 @@ describe('Home', () => {
     done();
   });
 
+  it('POST: Add product to cart', async (done) => {
+    const res = await agent
+      .post('/api/user/addProductToCart')
+      .send({
+        productID,
+        quantity: 10,
+      });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('Product added successfully');
+    done();
+  });
+
   it('PUT: Update product to cart', async (done) => {
     const res = await agent
       .put('/api/user/updateFromCart')
@@ -276,7 +289,31 @@ describe('Home', () => {
     expect(res.body.message).toMatch('OK');
     done();
   });
+  it('PUT: Update product to cart', async (done) => {
+    const res = await agent
+      .put('/api/user/updateFromCart')
+      .send({
+        productID,
+        quantity: 0,
+      });
 
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('Product Updated');
+    done();
+  });
+
+  it('POST: Add product to cart', async (done) => {
+    const res = await agent
+      .post('/api/user/addProductToCart')
+      .send({
+        productID,
+        quantity: 10,
+      });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('Product added successfully');
+    done();
+  });
   it('POST: Checkout cart', async (done) => {
     const res = await agent
       .post('/api/user/checkout');
