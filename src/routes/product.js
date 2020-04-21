@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import { admin, catchAsync } from '../middleware';
 import Product from '../models/Product';
-import { productIDSchema, productSchema, productTypeSchema, productUpdateSchema } from '../validation';
+import {
+ productIDSchema, productSchema, productTypeSchema, productUpdateSchema,
+} from '../validation';
 
 const router = Router();
 
