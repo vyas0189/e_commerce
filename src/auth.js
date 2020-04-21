@@ -1,5 +1,5 @@
 import { SESSION_NAME } from './config';
-import Admin from './models/Admin';
+import Admin from './models/User';
 
 export const isLoggedIn = (req) => !!req.session.userId;
 
