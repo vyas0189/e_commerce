@@ -1,19 +1,13 @@
 import { Router } from 'express';
 import { admin, catchAsync } from '../middleware';
 import Product from '../models/Product';
-import {
- productIDSchema, productSchema, productTypeSchema, productUpdateSchema,
-} from '../validation';
+import { productIDSchema, productSchema, productTypeSchema, productUpdateSchema } from '../validation';
 
 const router = Router();
 
 router.get('/', catchAsync(async (req, res) => {
-    try {
-        const products = await Product.find();
-        res.json({ message: 'OK', products });
-    } catch (err) {
-        return res.status(500).json({ message: 'Server Error' });
-    }
+    const products = await Product.find();
+    res.json({ message: 'OK', products });
 }));
 
 router.get('/:productID', catchAsync(async (req, res) => {
@@ -49,9 +43,11 @@ router.put('/', admin, catchAsync(async (req, res) => {
     const product = Product.findById(productID);
     if (product) {
         const pro = await Product.findOneAndUpdate({ _id: productID }, { $set: p });
-        return res.status(200).json({ message: 'OK', pro });
+        if (!pro) {
+            return res.status(404).json({ message: 'Product Not Found' });
+        }
+        return res.status(200).json({ message: 'OK', product: pro });
     }
-    return res.status(500).json({ message: 'Server Error' });
 }));
 
 router.delete('/:productID', admin, catchAsync(async (req, res) => {
@@ -62,7 +58,6 @@ router.delete('/:productID', admin, catchAsync(async (req, res) => {
         const p = await Product.findByIdAndRemove({ _id: productID });
         return res.status(200).json({ message: 'OK', p });
     }
-    return res.status(500).json({ message: 'Server Error' });
 }));
 
 router.get('/category/:productType', catchAsync(async (req, res) => {

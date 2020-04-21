@@ -54,7 +54,6 @@ app.use(helmet());
 app.use(json({ extended: false }));
 app.use(session({ ...SESSION_OPTIONS }));
 
-
 app.get('/api', (req, res) => {
     res.json({ welcome: 'E-Commerce 🛒' });
 });
