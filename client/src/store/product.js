@@ -6,7 +6,7 @@ const productModel = {
     err: null,
     products: [],
     cart: [],
-    product: null,
+    product: "",
 
     getAllProducts: thunk(async (action) => {
         action.setError(null);
@@ -24,7 +24,7 @@ const productModel = {
         action.isLoading(false);
     }),
 
-    getProduct: thunk(async (action, { productID }) => {
+    getProduct: thunk(async (action, productID) => {
         action.setError(null);
         action.isLoading(true);
 
@@ -32,6 +32,7 @@ const productModel = {
             const res = await axios.get(`/api/product/${productID}`);
 
             if (res.status === 200) {
+                console.log(res.data.product)
                 action.setProduct(res.data.product);
             }
         } catch (error) {
@@ -76,7 +77,8 @@ const productModel = {
 
     setProduct: action((state, product) => {
         state.product = product
-    })
+    }),
+
 }
 
 export default productModel
