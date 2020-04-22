@@ -1,10 +1,10 @@
-import adminModel from './admin';
+import userModel from './user';
 import productModel from './product';
 
 
 const model = {
     products: productModel,
-    admin: adminModel
+    user: userModel
 }
 
 export default model;

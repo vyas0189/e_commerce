@@ -6,9 +6,9 @@ import "./Navbar.css";
 
 const NavbarComponent = () => {
     const history = useHistory();
-    const logout = useStoreActions(actions => actions.admin.logout)
-    const loading = useStoreState(state => state.admin.loading)
-    const isAuthenticated = useStoreState(state => state.admin.isAuthenticated);
+    const logout = useStoreActions(actions => actions.user.logout)
+    const loading = useStoreState(state => state.user.loading)
+    const isAuthenticated = useStoreState(state => state.user.isAuthenticated);
 
     const logoutUser = () => {
         logout();

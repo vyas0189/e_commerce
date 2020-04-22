@@ -119,7 +119,6 @@ router.put('/updateFromCart', auth, catchAsync(async (req, res) => {
             }
             return res.status(200).json({ message: 'Product Updated' });
         }
-        // await User.updateOne({ _id: userId, 'products.productID': productID }, { $pull: { products: { productID } } });
 
         return res.status(201).json({ message: 'Unable to Update Product' });
     }
