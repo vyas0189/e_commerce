@@ -12,10 +12,10 @@ import ProductComponent from '../components/Product'
 const App = () => {
 
   const getProducts = useStoreActions(action => action.products.getAllProducts)
-  const admin = useStoreActions(actions => actions.admin.getCurrentAdmin);
+  const getUser = useStoreActions(actions => actions.user.getUser);
 
   useEffect(() => {
-    admin()
+    getUser()
   }, [])
 
   return (

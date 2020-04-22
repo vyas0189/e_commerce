@@ -2,11 +2,11 @@ import axios from "axios";
 import { action, thunk } from "easy-peasy";
 
 const productModel = {
-    loading: false,
+    loading: true,
     err: null,
     products: [],
     cart: [],
-    product: "",
+    product: null,
 
     getAllProducts: thunk(async (action) => {
         action.setError(null);
@@ -45,11 +45,8 @@ const productModel = {
         action.isLoading(true);
 
         try {
-            console.log(category);
-
             const res = await axios.get(`/api/product/category/${category}`);
             if (res.status === 200) {
-                console.table(res.data.product)
                 action.setProducts(res.data.product);
             }
         } catch (error) {
@@ -58,11 +55,118 @@ const productModel = {
         action.isLoading(false);
     }),
 
-    addToCart: action((state, item) => {
-        state.cart = [...state.cart, item]
+    addProduct: thunk(async (action, { name, productType, price, image, quantity, description }) => {
+        action.setError(null);
+        action.isLoading(true);
+
+        try {
+            const res = await axios.post('/api/product', { name, productType, price, image, quantity, description });
+
+            if (res.status === 200) {
+                action.getAllProducts();
+            }
+        } catch (error) {
+            action.setError(error.response.data.message);
+        }
+        action.isLoading(false);
+
     }),
-    removeItemFromCart: action((state, id) => {
-        state.cart = state.cart.filter(item => item._id !== id)
+    updateProduct: thunk(async (action, { productID, name, productType, price, image, quantity, description }) => {
+        action.setError(null);
+        action.isLoading(true);
+
+        try {
+            const res = await axios.put('/api/product', { productID, name, productType, price, image, quantity, description });
+
+            if (res.status === 200) {
+                action.getAllProducts();
+            }
+        } catch (error) {
+            action.setError(error.response.data.message);
+        }
+        action.isLoading(false);
+
+    }),
+
+    deleteProduct: thunk(async (action, { productID }) => {
+        action.setError(null);
+        action.isLoading(true);
+
+        try {
+            const res = await axios.delete(`/api/${productID}`);
+
+            if (res.status === 200) {
+                action.getAllProducts();
+            }
+        } catch (error) {
+            action.setError(error.response.data.message);
+        }
+        action.isLoading(false);
+    }),
+    getCart: thunk(async (action) => {
+        action.setError(null);
+        action.isLoading(true);
+
+        try {
+            const res = await axios.get('/api/user/cart');
+
+            if (res.status === 200) {
+                action.setCart(res.data.cart);
+            }
+        } catch (error) {
+            action.setError(error.response.data.message);
+        }
+        action.isLoading(false);
+    }),
+
+    addToCart: thunk(async (action, { productID, quantity }) => {
+        action.setError(null);
+        action.isLoading(true);
+
+        try {
+            const res = await axios.post('/api/user/addProductToCart', { productID, quantity });
+
+            if (res.status === 200) {
+                action.getCart();
+            }
+        } catch (error) {
+            action.setError(error.response.data.message);
+        }
+        action.setLoading(false);
+    }),
+
+    updateCart: thunk(async (action, { productID, quantity }) => {
+        action.setError(null);
+        action.isLoading(true);
+
+        try {
+            const res = await axios.put('/api/user/updateFromCart', { productID, quantity });
+
+            if (res.status === 200) {
+                action.getCart();
+            }
+        } catch (error) {
+            action.setError(error.response.data.message);
+        }
+
+        action.setLoading(false);
+    }),
+
+    checkout: thunk(async (action) => {
+        action.setError(null);
+        action.isLoading(true);
+
+        try {
+            const res = await axios.post('/checkout');
+
+            if (res.status === 200) {
+                action.getCart();
+            }
+        } catch (error) {
+            action.setError(error.response.data.message);
+        }
+
+        action.setLoading(false);
     }),
 
     isLoading: action((state, loading) => {
@@ -76,8 +180,11 @@ const productModel = {
     }),
 
     setProduct: action((state, product) => {
-        state.product = product
+        state.product = product;
     }),
+    setCart: action((state, cart) => {
+        state.cart = cart;
+    })
 
 }
 

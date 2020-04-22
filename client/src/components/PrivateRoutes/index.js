@@ -5,7 +5,7 @@ import { Redirect, Route } from 'react-router-dom'
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
 
-    const isAuthenticated = useStoreState(state => state.admin.isAuthenticated)
+    const isAuthenticated = useStoreState(state => state.user.isAuthenticated)
 
     return (
         <Route
