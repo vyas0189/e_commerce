@@ -55,6 +55,54 @@ const productModel = {
         action.isLoading(false);
     }),
 
+    addProduct: thunk(async (action, { name, productType, price, image, quantity, description }) => {
+        action.setError(null);
+        action.isLoading(true);
+
+        try {
+            const res = await axios.post('/api/product', { name, productType, price, image, quantity, description });
+
+            if (res.status === 200) {
+                action.getAllProducts();
+            }
+        } catch (error) {
+            action.setError(error.response.data.message);
+        }
+        action.isLoading(false);
+
+    }),
+    updateProduct: thunk(async (action, { productID, name, productType, price, image, quantity, description }) => {
+        action.setError(null);
+        action.isLoading(true);
+
+        try {
+            const res = await axios.put('/api/product', { productID, name, productType, price, image, quantity, description });
+
+            if (res.status === 200) {
+                action.getAllProducts();
+            }
+        } catch (error) {
+            action.setError(error.response.data.message);
+        }
+        action.isLoading(false);
+
+    }),
+
+    deleteProduct: thunk(async (action, { productID }) => {
+        action.setError(null);
+        action.isLoading(true);
+
+        try {
+            const res = await axios.delete(`/api/${productID}`);
+
+            if (res.status === 200) {
+                action.getAllProducts();
+            }
+        } catch (error) {
+            action.setError(error.response.data.message);
+        }
+        action.isLoading(false);
+    }),
     getCart: thunk(async (action) => {
         action.setError(null);
         action.isLoading(true);
