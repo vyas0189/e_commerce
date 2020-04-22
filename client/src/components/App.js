@@ -8,6 +8,7 @@ import Products from '../pages/Products';
 import NavbarComponent from './Navbar';
 import PrivateRoute from './PrivateRoutes';
 import ProductComponent from '../components/Product'
+import LoginComponent from '../components/Login'
 
 const App = () => {
 
@@ -27,6 +28,7 @@ const App = () => {
           <Route exact path="/products/:category" component={Products} />
           <Route exact path="/product/:productID" component={ProductComponent} />
           <Route exact path="/admin" component={Admin} />
+          <Route exact path="/login" component={LoginComponent} />
           {/* <Route exact path="/register" component={Register} /> */}
           {/* <Route exact path="/products" component={Products} /> */}
           <PrivateRoute exact path="/register" component={Dashboard} />
