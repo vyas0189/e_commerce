@@ -1,9 +1,9 @@
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import Dashboard from '../Dashboard';
+import Dashboard from '../../../pages/Dashboard';
 
-const Admin = () => {
+const AdminLogin = () => {
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -44,4 +44,4 @@ const Admin = () => {
     )
 }
 
-export default Admin
+export default AdminLogin;

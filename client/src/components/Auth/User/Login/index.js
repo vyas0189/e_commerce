@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import "./Login.css";
 
-const LoginComponent = () => {
+const Login = () => {
   return (
     <div>
       <Form class="center">
@@ -28,4 +28,4 @@ const LoginComponent = () => {
   );
 };
 
-export default LoginComponent
+export default Login
