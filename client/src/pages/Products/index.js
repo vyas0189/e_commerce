@@ -43,26 +43,29 @@ const Products = () => {
         <div>
             {loading ? <h1>Loading... </h1> :
                 <Container style={styles.container}>
-                    <Row>
-                        {products.map((product, index) => (
-                            <Col md='4' lg='3' key={index} style={{ marginBottom: '1.2rem' }}>
-                                <Card style={styles.cardFormat} >
-                                    <Card.Img variant="top" style={styles.img} src={product.image} />
-                                    <Card.Body>
-                                        <Card.Title><h1 style={styles.h1}>{product.name}</h1></Card.Title>
-                                        <Card.Text>
-                                            ${product.price.toFixed(2)}
-                                        </Card.Text>
-                                        <div>
-                                            <AddToCartButton productID={product._id} quantity={1} />
-                                            <Link to={`/product/${product._id}`}>Details</Link>
-                                        </div>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
+                    {products.length < 0 ? <h1>No Products</h1> : (
+                        <Row>
+                            {products.map((product, index) => (
+                                <Col md='4' lg='3' key={index} style={{ marginBottom: '1.2rem' }}>
+                                    <Card style={styles.cardFormat} >
+                                        <Card.Img variant="top" style={styles.img} src={product.image} />
+                                        <Card.Body>
+                                            <Card.Title><h1 style={styles.h1}>{product.name}</h1></Card.Title>
+                                            <Card.Text>
+                                                ${product.price.toFixed(2)}
+                                            </Card.Text>
+                                            <div>
+                                                <AddToCartButton productID={product._id} quantity={1} />
+                                                <Link to={`/product/${product._id}`}>Details</Link>
+                                            </div>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
 
-                        ))}
-                    </Row>
+                            ))}
+                        </Row>
+                    )
+                    }
                 </Container>
             }
         </div>

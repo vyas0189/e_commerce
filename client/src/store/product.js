@@ -6,7 +6,7 @@ const productModel = {
     err: null,
     products: [],
     cart: [],
-    product: null,
+    product: [],
 
     getAllProducts: thunk(async (action) => {
         action.setError(null);
