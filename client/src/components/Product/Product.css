@@ -1,9 +1,25 @@
-.test {
+.imageDiv {
     float: left;
-    height: 10px;
+    height: 550px;
+    width: 500px;
 }
 
 .second {
     display: inline-block;
-    font-family: 'Manrope', sans-serif;
+}
+
+h1 {
+    font-family: 'Assistant', sans-serif;
+}
+
+#nameDisplay {
+    font-size: 70px;
+}
+
+#priceDisplay {
+    font-size: 35px;
+}
+
+#descriptionDisplay {
+    font-size: 30px;
 }
