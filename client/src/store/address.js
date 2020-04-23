@@ -35,3 +35,5 @@ const addressModel = {
         state.error = error;
     })
 }
+
+export default addressModel;

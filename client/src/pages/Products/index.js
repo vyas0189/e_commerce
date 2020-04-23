@@ -1,7 +1,8 @@
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import React, { useEffect } from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import { Card, Button, Container, Row, Col } from 'react-bootstrap';
+import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Link, useParams } from 'react-router-dom';
+import AddToCartButton from '../../components/AddToCartButton';
 
 const Products = () => {
 
@@ -17,50 +18,53 @@ const Products = () => {
 
     const styles = {
         h1: {
-        fontSize: '15px'
+            fontSize: '15px'
         },
         container: {
-            paddingTop: '120px', 
+            paddingTop: '120px',
             paddingBottom: '120px',
         },
-        img:{
+        img: {
             height: '250px',
             width: '250px',
             objectFit: 'cover'
         },
-        cardFormat:{
+        cardFormat: {
             height: '28.3rem',
             width: '15.77rem'
         }
     };
-    
+
     const productsCart = () => {
 
     }
 
     return (
         <div>
-            {loading ? <h1>Loading... </h1>:
-        <Container style={styles.container}>
-        <Row>
-            {products.map((product, index)=> (
-                            <Col md='4' lg = '3' key={index}>
-                            <Card style={styles.cardFormat} >
-                                <Card.Img variant="top" style={styles.img} src={product.image} />
-                                <Card.Body>
-                                    <Card.Title><h1 style={styles.h1}>{product.name}</h1></Card.Title>
-                                    <Card.Text>
-                                        ${product.price.toFixed(2)}
-                                    </Card.Text>
-                                    <Link to={`/product/${product._id}`}>Details</Link>
-                                </Card.Body>
-                            </Card>
+            {loading ? <h1>Loading... </h1> :
+                <Container style={styles.container}>
+                    <Row>
+                        {products.map((product, index) => (
+                            <Col md='4' lg='3' key={index} style={{ marginBottom: '1.2rem' }}>
+                                <Card style={styles.cardFormat} >
+                                    <Card.Img variant="top" style={styles.img} src={product.image} />
+                                    <Card.Body>
+                                        <Card.Title><h1 style={styles.h1}>{product.name}</h1></Card.Title>
+                                        <Card.Text>
+                                            ${product.price.toFixed(2)}
+                                        </Card.Text>
+                                        <div>
+                                            <AddToCartButton productID={product._id} quantity={1} />
+                                            <Link to={`/product/${product._id}`}>Details</Link>
+                                        </div>
+                                    </Card.Body>
+                                </Card>
                             </Col>
 
-            ))}
-        </Row>
-        </Container> 
-        }
+                        ))}
+                    </Row>
+                </Container>
+            }
         </div>
     )
 };

@@ -40,6 +40,7 @@ const productModel = {
         }
         action.isLoading(false);
     }),
+
     getProductCategory: thunk(async (action, category) => {
         action.setError(null);
         action.isLoading(true);
@@ -132,7 +133,7 @@ const productModel = {
         } catch (error) {
             action.setError(error.response.data.message);
         }
-        action.setLoading(false);
+        action.isLoading(false);
     }),
 
     updateCart: thunk(async (action, { productID, quantity }) => {
@@ -149,7 +150,7 @@ const productModel = {
             action.setError(error.response.data.message);
         }
 
-        action.setLoading(false);
+        action.isLoading(false);
     }),
 
     checkout: thunk(async (action) => {
@@ -166,7 +167,7 @@ const productModel = {
             action.setError(error.response.data.message);
         }
 
-        action.setLoading(false);
+        action.isLoading(false);
     }),
 
     isLoading: action((state, loading) => {
