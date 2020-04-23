@@ -39,8 +39,16 @@ beforeAll(async () => {
   await agent
     .post('/api/user/register')
     .send({
+      firstName: 'Admin',
       username: 'admin',
       password: '@Admin0',
+      lastName: 'Testing',
+      email: 'admin@gmail.com',
+      address: '1111 Test Dr',
+      address2: 'APT 12',
+      city: 'TestCity',
+      state: 'TX',
+      zip: '7777',
       role: 'admin',
     });
   const productAdd = await agent
@@ -96,38 +104,53 @@ describe('Home', () => {
     done();
   });
 
-  it('POST: LOGIN USER', async (done) => {
+  it('POST: Create User', async (done) => {
     const res = await agent
-      .post('/api/user/login')
+      .post('/api/user/register')
       .send({
-        username: 'admin',
-        password: '@Admin0',
+        firstName: 'Test',
+        username: 'test0',
+        password: '@Testing0',
+        lastName: 'Testing',
+        email: 'test@gmail.com',
+        address: '1111 Test Dr',
+        address2: 'APT 12',
+        city: 'TestCity',
+        state: 'TX',
+        zip: '7777',
+        role: 'user',
       });
-
     expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toMatch('OK');
-    expect(res.body).toHaveProperty('user');
-    done();
-  });
-
-  it('POST(FAIL): LOGIN USER, BUT USER IS ALREADY LOGGED IN', async (done) => {
-    const res = await agent
-      .post('/api/user/login')
-      .send({ username: 'admin', password: '@Admin0' });
-
-    expect(res.statusCode).toEqual(401);
     expect(res.body).toHaveProperty('message');
-    expect(res.body.message).toMatch('You are already logged in');
     done();
   });
 
-  it('GET: ADMIN INFO', async (done) => {
+  it('GET: Return current user info', async (done) => {
     const res = await agent
       .get('/api/user/me');
-
     expect(res.statusCode).toEqual(200);
     expect(res.body.message).toMatch('OK');
-    expect(res.body).toHaveProperty('user');
+    done();
+  });
+
+  it('POST(FAIL): Create User already logged in', async (done) => {
+    const res = await agent
+      .post('/api/user/register')
+      .send({
+        firstName: 'Test',
+        username: 'test0',
+        password: '@Testing0',
+        lastName: 'Testing',
+        email: 'test@gmail.com',
+        address: '1111 Test Dr',
+        address2: 'APT 12',
+        city: 'TestCity',
+        state: 'TX',
+        zip: '7777',
+        role: 'user',
+      });
+    expect(res.statusCode).toEqual(401);
+    expect(res.body.message).toMatch('You are already logged in');
     done();
   });
 
@@ -138,25 +161,32 @@ describe('Home', () => {
     expect(res.body.message).toMatch('OK');
     done();
   });
-  it('POST(FAIL): REGISTER USER', async (done) => {
+
+  it('POST(FAIL): Create User already exists', async (done) => {
     const res = await agent
       .post('/api/user/register')
       .send({
-        username: 'admin',
-        password: '@Admin0',
-        role: 'admin',
+        firstName: 'Test',
+        username: 'test0',
+        password: '@Testing0',
+        lastName: 'Testing',
+        email: 'test@gmail.com',
+        address: '1111 Test Dr',
+        address2: 'APT 12',
+        city: 'TestCity',
+        state: 'TX',
+        zip: '7777',
+        role: 'user',
       });
     expect(res.statusCode).toEqual(500);
-    expect(res.body).toHaveProperty('message');
     expect(res.body.message).toMatch('User already exists');
-
     done();
   });
 
   it('POST(FAIL): LOGIN USER wrong password', async (done) => {
     const res = await agent
       .post('/api/user/login')
-      .send({ username: 'admin', password: '@Testing00' });
+      .send({ username: 'test0', password: '@Testing00' });
 
     expect(res.statusCode).toEqual(401);
 
@@ -167,7 +197,7 @@ describe('Home', () => {
   it('POST(FAIL): LOGIN USER wrong username', async (done) => {
     const res = await agent
       .post('/api/user/login')
-      .send({ username: 'test', password: '@Admin0' });
+      .send({ username: 'test', password: '@Testing0' });
 
     expect(res.statusCode).toEqual(401);
     expect(res.body.message).toMatch('Incorrect email or password');
@@ -187,9 +217,117 @@ describe('Home', () => {
   it('POST: LOGIN USER', async (done) => {
     const res = await agent
       .post('/api/user/login')
-      .send({ username: 'admin', password: '@Admin0' });
+      .send({ username: 'test0', password: '@Testing0' });
 
     expect(res.statusCode).toEqual(200);
+    done();
+  });
+
+  it('PUT: Update User', async (done) => {
+    const res = await agent
+      .put('/api/user/update')
+      .send({
+        firstName: 'Test',
+        username: 'test0',
+        lastName: 'Testing',
+        email: 'testing@gmail.com',
+        address: '1111 Test Dr',
+        address2: 'APT 100',
+        city: 'TestCity',
+        state: 'TX',
+        zip: '7777',
+      });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('u');
+    done();
+  });
+
+  it('POST: Add product to cart', async (done) => {
+    const res = await agent
+      .post('/api/user/addProductToCart')
+      .send({
+        productID,
+        quantity: 10,
+      });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('Product added successfully');
+    done();
+  });
+
+  it('POST: Add product to cart', async (done) => {
+    const res = await agent
+      .post('/api/user/addProductToCart')
+      .send({
+        productID,
+        quantity: 10,
+      });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('Product added successfully');
+    done();
+  });
+
+  it('PUT: Update product to cart', async (done) => {
+    const res = await agent
+      .put('/api/user/updateFromCart')
+      .send({
+        productID,
+        quantity: 50,
+      });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('Product Updated');
+    done();
+  });
+
+  it('GET: Get items in cart  ', async (done) => {
+    const res = await agent
+      .get('/api/user/cart');
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('OK');
+    done();
+  });
+  it('PUT: Update product to cart', async (done) => {
+    const res = await agent
+      .put('/api/user/updateFromCart')
+      .send({
+        productID,
+        quantity: 0,
+      });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('Product Updated');
+    done();
+  });
+
+  it('POST: Add product to cart', async (done) => {
+    const res = await agent
+      .post('/api/user/addProductToCart')
+      .send({
+        productID,
+        quantity: 10,
+      });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('Product added successfully');
+    done();
+  });
+  it('POST: Checkout cart', async (done) => {
+    const res = await agent
+      .post('/api/user/checkout');
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toMatch('OK');
+    done();
+  });
+
+  it('DELETE: Delete product', async (done) => {
+    const res = await agent
+      .delete(`/api/product/${productID}`);
+    expect(res.statusCode).toEqual(401);
+    expect(res.body.message).toMatch('Not Authorized!');
     done();
   });
 
@@ -202,41 +340,12 @@ describe('Home', () => {
     done();
   });
 
-  it('DELETE: Delete product', async (done) => {
+  it('GET: Checkout cart', async (done) => {
     const res = await agent
-      .delete(`/api/product/${productID}`);
+      .post('/api/user/checkout');
+
     expect(res.statusCode).toEqual(401);
-    expect(res.body.message).toMatch('Not Authorized!');
-    done();
-  });
-
-  it('POST: Checkout cart', async (done) => {
-    const res = await agent
-      .post('/api/user/checkout')
-      .send({
-        products: [{
-          productID,
-          quantity: 10,
-        }],
-      });
-
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toMatch('OK');
-    done();
-  });
-
-  it('POST(FAIL): Checkout cart', async (done) => {
-    const res = await agent
-      .post('/api/user/checkout')
-      .send({
-        products: [{
-          productID,
-          quantity: 100,
-        }],
-      });
-
-    expect(res.statusCode).toEqual(201);
-    expect(res.body).toHaveProperty('message');
+    expect(res.body.message).toMatch('You must be logged in');
     done();
   });
 
@@ -258,10 +367,9 @@ describe('Home', () => {
 
   it('GET(FAIL): GET A SPECIFIC PRODUCTS', async (done) => {
     const res = await agent
-      .get('/api/product/5e8a0af04b5c8e1594bcb929/');
+      .get('/api/product/5e9f39f5b5da01ac4ff07531/');
     expect(res.statusCode).toEqual(400);
     expect(res.body).toHaveProperty('message');
-    expect(res.body.message).toMatch('Product not found');
     done();
   });
 
@@ -295,6 +403,54 @@ describe('Home', () => {
         description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam recusandae fuga corporis accusantium, tenetur quos. Vel, facilis harum mollitia quidem, voluptas ea laudantium assumenda quod esse delectus unde sed ut.',
       });
     expect(res.statusCode).toEqual(200);
+    done();
+  });
+
+  it('PUT(FAIL): Update Product Info', async (done) => {
+    const res = await agent
+      .put('/api/product/')
+      .send({
+        productID: '5e9f3abb8de885d2c88f3fcf',
+        name: 'Underamor Shirt',
+        productType: 'men',
+        quantity: 50,
+        price: 25.00,
+        image: 'https://istockphoto.6q33.net/c/372642/258824/4205?u=https%3A%2F%2Fwww.istockphoto.com%2Fphoto%2Fconfidence-puts-any-outfit-together-perfectly-gm1070782274-286524454',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam recusandae fuga corporis accusantium, tenetur quos. Vel, facilis harum mollitia quidem, voluptas ea laudantium assumenda quod esse delectus unde sed ut.',
+      });
+    expect(res.statusCode).toEqual(404);
+    done();
+  });
+
+  it('PUT(FAIL): Update Product Info & Invalid product type', async (done) => {
+    const res = await agent
+      .put('/api/product/')
+      .send({
+        productID: '5e9f3abb8de885d2c88f3fcf',
+        name: 'Underamor Shirt',
+        productType: 'xyz',
+        quantity: 50,
+        price: 25.00,
+        image: 'https://istockphoto.6q33.net/c/372642/258824/4205?u=https%3A%2F%2Fwww.istockphoto.com%2Fphoto%2Fconfidence-puts-any-outfit-together-perfectly-gm1070782274-286524454',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam recusandae fuga corporis accusantium, tenetur quos. Vel, facilis harum mollitia quidem, voluptas ea laudantium assumenda quod esse delectus unde sed ut.',
+      });
+    expect(res.statusCode).toEqual(500);
+    done();
+  });
+
+  it('PUT(FAIL): Update Product Info && Invalid Mongo ID', async (done) => {
+    const res = await agent
+      .put('/api/product/')
+      .send({
+        productID: '5e9f3abb8de885d2c88f3f',
+        name: 'Underamor Shirt',
+        productType: 'men',
+        quantity: 50,
+        price: 25.00,
+        image: 'https://istockphoto.6q33.net/c/372642/258824/4205?u=https%3A%2F%2Fwww.istockphoto.com%2Fphoto%2Fconfidence-puts-any-outfit-together-perfectly-gm1070782274-286524454',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam recusandae fuga corporis accusantium, tenetur quos. Vel, facilis harum mollitia quidem, voluptas ea laudantium assumenda quod esse delectus unde sed ut.',
+      });
+    expect(res.statusCode).toEqual(500);
     done();
   });
 

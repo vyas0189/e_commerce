@@ -1,0 +1,25 @@
+.imageDiv {
+    float: left;
+    height: 550px;
+    width: 500px;
+}
+
+.second {
+    display: inline-block;
+}
+
+h1 {
+    font-family: 'Assistant', sans-serif;
+}
+
+#nameDisplay {
+    font-size: 70px;
+}
+
+#priceDisplay {
+    font-size: 35px;
+}
+
+#descriptionDisplay {
+    font-size: 30px;
+}
