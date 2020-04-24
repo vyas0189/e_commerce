@@ -59,6 +59,7 @@ const productModel = {
     addProduct: thunk(async (action, { name, productType, price, image, quantity, description }) => {
         action.setError(null);
         action.isLoading(true);
+        console.log({ name, productType, price, image, quantity, description });
 
         try {
             const res = await axios.post('/api/product', { name, productType, price, image, quantity, description });
@@ -89,12 +90,12 @@ const productModel = {
 
     }),
 
-    deleteProduct: thunk(async (action, { productID }) => {
+    deleteProduct: thunk(async (action, productID) => {
         action.setError(null);
         action.isLoading(true);
 
         try {
-            const res = await axios.delete(`/api/${productID}`);
+            const res = await axios.delete(`/api/product/${productID}`);
 
             if (res.status === 200) {
                 action.getAllProducts();
