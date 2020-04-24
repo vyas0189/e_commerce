@@ -22,7 +22,7 @@ const NavbarComponent = () => {
                     <Link className="nav-link" to='/dashboard'>Dashboard</Link>
                 </li>
                 <li className="nav-item">
-                    <i onClick={logoutUser} className="nav-link">Logout</i>
+                    <button onClick={logoutUser} className="nav-link aButton">Logout</button>
                 </li>
             </ul>
         )
@@ -32,9 +32,9 @@ const NavbarComponent = () => {
         return (
             <ul className="navbar-nav ml-auto">
                 <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+                    <button className="nav-link dropdown-toggle aButton" href="/#" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        <i className="fas fa-user"></i> Category </a>
+                        <i className="fas fa-user"></i> Category </button>
 
                     <div className="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
                         <Link className="dropdown-item" to='/products/men'>Men</Link>
@@ -49,7 +49,7 @@ const NavbarComponent = () => {
                     <Link to='/cart' className="nav-link">Cart</Link>
                 </li>
                 <li className="nav-item">
-                    <i onClick={logoutUser} className="nav-link">Logout</i>
+                    <button onClick={logoutUser} className="nav-link aButton">Logout</button>
                 </li>
 
             </ul>
@@ -65,9 +65,9 @@ const NavbarComponent = () => {
                 <Link to='/register' className="nav-link">Register</Link>
             </li>
             <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+                <button className="nav-link dropdown-toggle aButton" href="/#" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
-                    <i className="fas fa-user"></i> Category </a>
+                    <i className="fas fa-user"></i> Category </button>
 
                 <div className="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
                     <Link className="dropdown-item" to='/products/men'>Men</Link>
@@ -103,7 +103,7 @@ const NavbarComponent = () => {
             </Link>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
-                {!loading && isAuthenticated ? navbar() : guestNavbar()}
+                {loading ? null : !loading && isAuthenticated ? navbar() : guestNavbar()}
             </Navbar.Collapse>
         </Navbar >
     )

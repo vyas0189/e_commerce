@@ -1,7 +1,7 @@
 import { useStoreState } from 'easy-peasy';
 import React from 'react';
 import AdminDashboard from '../../components/Dashboard/Admin';
-import UserDashboard from '../../components/Dashboard/User';
+import Home from '../Home';
 
 const Dashboard = () => {
 
@@ -12,7 +12,7 @@ const Dashboard = () => {
         <div>
             {loading || !user ? <h1>Loading...</h1> : (
                 !loading && user.role === 'admin' ? <AdminDashboard /> :
-                    !loading && user.role === 'user' ? <UserDashboard /> : null
+                    !loading && user.role === 'user' ? <Home /> : null
             )}
         </div>
     )
