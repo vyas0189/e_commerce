@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
-const AddToCartButton = (props) => {
+const RemoveFromCartButton = (props) => {
 
     const [show, setShow] = useState(false);
     const [message, setMessage] = useState('')
@@ -11,13 +11,14 @@ const AddToCartButton = (props) => {
     const handleShow = () => setShow(true);
 
     const cart = useStoreState(state => state.products.cart);
-    const addToCart = useStoreActions(actions => actions.products.addToCart);
+    const updateCart = useStoreActions(actions => actions.products.updateCart);
     const isAuthenticated = useStoreState(state => state.user.isAuthenticated);
     const role = useStoreState(state => state.user.user)
     const history = useHistory();
 
     const handleClick = (e) => {
         e.preventDefault();
+        console.log(props, role);
 
         if (!isAuthenticated) {
             return history.push('/login');
@@ -25,29 +26,20 @@ const AddToCartButton = (props) => {
         if (role.role !== "user") {
             return;
         }
-        if (props.productquantity <= 0) {
-            setMessage('Item sold out.')
-            return handleShow()
-        }
         const item = cart.filter((item) => {
             return item.productID._id == props.productid
         });
 
         console.log('Items: ', item);
 
-        if (item.length > 0) {
-            setMessage('Item already in cart.')
-            return handleShow()
-        }
-
-        setMessage('Item added to cart.');
+        setMessage('Item removed from cart.');
         handleShow();
-        addToCart({ productID: props.productid, quantity: props.quantity });
+        updateCart({ productID: props.productid, quantity: 0 });
     }
     return (
         <>
             <Button onClick={handleClick}>
-                Add to Cart
+                Remove from cart
             </Button>
 
             <Modal show={show} onHide={handleClose}>
@@ -63,4 +55,4 @@ const AddToCartButton = (props) => {
     )
 }
 
-export default AddToCartButton;
+export default RemoveFromCartButton;

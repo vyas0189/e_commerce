@@ -42,6 +42,7 @@ const Products = () => {
                 <Container style={styles.container}>
                     <h1>{category}</h1>
                     <Row>
+
                         {products.map((product) => (
                             <Col md='4' lg='3' key={product._id}>
                                 <div className="mt-4" />
