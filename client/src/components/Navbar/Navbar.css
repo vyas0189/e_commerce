@@ -1,0 +1,12 @@
+#responsive-navbar-nav {
+    margin-right: 2rem;
+}
+
+.aButton {
+    background-color: Transparent;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    color: antiquewhite;
+}

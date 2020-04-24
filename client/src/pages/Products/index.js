@@ -10,7 +10,6 @@ const Products = () => {
     const getProductCategory = useStoreActions(actions => actions.products.getProductCategory)
     const loading = useStoreState(state => state.products.loading)
     const products = useStoreState(state => state.products.products)
-    const cart = useStoreState(state => state.products.cart);
 
     useEffect(() => {
         getProductCategory(category)
@@ -18,7 +17,8 @@ const Products = () => {
 
     const styles = {
         h1: {
-            fontSize: '15px'
+            fontSize: '15px',
+            color: 'black'
         },
         container: {
             paddingTop: '120px',
@@ -34,10 +34,6 @@ const Products = () => {
             width: '15.77rem'
         }
     };
-
-    const productsCart = () => {
-
-    }
 
     return (
         <div>
@@ -55,7 +51,7 @@ const Products = () => {
                                                 ${product.price.toFixed(2)}
                                             </Card.Text>
                                             <div>
-                                                <AddToCartButton productID={product._id} quantity={1} />
+                                                <AddToCartButton productID={product._id} quantity={1} productQuantity={product.quantity} />
                                                 <Link to={`/product/${product._id}`}>Details</Link>
                                             </div>
                                         </Card.Body>

@@ -1,0 +1,9 @@
+.updateProductAdmin {
+    padding: 1.2rem;
+}
+
+.updateProductAdminRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
