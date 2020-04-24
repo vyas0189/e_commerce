@@ -72,7 +72,7 @@ const Register = () => {
 
         <Form.Group controlId="formBasicAddress2">
           <Form.Label>Address 2 (optional)</Form.Label>
-          <Form.Control required type="text" placeholder="Enter Address 2" name="address2" />
+          <Form.Control type="text" placeholder="Enter Address 2" name="address2" />
         </Form.Group>
 
         <Form.Group controlId="formBasicCity">
