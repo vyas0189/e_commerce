@@ -11,7 +11,6 @@ const Products = () => {
     const getProductCategory = useStoreActions(actions => actions.products.getProductCategory)
     const loading = useStoreState(state => state.products.loading)
     const products = useStoreState(state => state.products.products)
-    const cart = useStoreState(state => state.products.cart);
 
     useEffect(() => {
         getProductCategory(category)
@@ -36,11 +35,6 @@ const Products = () => {
             width: '15.73rem',
         }
     };
-    
-    const productsCart = () => {
-
-    }
-
     return (
         <div>
             {loading ? <h1>Loading... </h1>:
@@ -50,9 +44,9 @@ const Products = () => {
         <Row>
             {products.map((product, index)=> (
                             <Col md='4' lg = '3' key={index}>
-                            <div class="mt-4" />
+                            <div className="mt-4" />
                             <Card style={styles.cardFormat} >
-                                 <a href={`/product/${product._id}`}> <Card.Img variant="top" style={styles.img} src={product.image} /></a>
+                                 <a href={`/product/${product._id}`}> <Card.Img variant="top" style={styles.img} src={product.image} productQuantity={product.quantity} /></a>
                                 <Card.Body>
                                     <Card.Title><h1 style={styles.h1}>{product.name}</h1></Card.Title>
                                     <Card.Text>
@@ -64,6 +58,7 @@ const Products = () => {
                                 </Card.Body>
                             </Card>
                             </Col>
+
 
             ))}
         </Row>

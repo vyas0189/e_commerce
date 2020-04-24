@@ -1,8 +1,9 @@
 import { useStoreActions, useStoreState } from 'easy-peasy';
+import { MDBBtn, MDBCard, MDBCol, MDBContainer, MDBInput, MDBRow } from 'mdbreact';
 import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import Dashboard from '../../../pages/Dashboard';
-
+import './Admin.css';
 const AdminLogin = () => {
     const [formData, setFormData] = useState({
         username: '',
@@ -25,21 +26,25 @@ const AdminLogin = () => {
     };
     return (
         loading ? <h1>Loading...</h1> : (isAuthenticated ? <Dashboard /> :
-            <Form onSubmit={(e) => onSubmit(e)}>
-                <Form.Group controlId="formBasicUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control name="username" type="text" placeholder="Username" required autoFocus onChange={(e) => onChange(e)} />
-                </Form.Group>
-
-                <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control name="password" type="password" placeholder="Password" value={password} onChange={(e) => onChange(e)} minLength="6" required />
-                </Form.Group>
-
-                <Button variant="primary" type="submit">
-                    Submit
-            </Button>
-            </Form>
+            <MDBContainer className="adminLoginContainer">
+                <MDBCard className="adminLoginCard">
+                    <MDBRow className="adminLogin">
+                        <MDBCol md="6">
+                            <Form onSubmit={(e) => onSubmit(e)}>
+                                <p className="h5 text-center mb-4">Admin Sign in</p>
+                                <div className="grey-text">
+                                    <MDBInput label="Username" icon="user" group type="text" validate error="wrong"
+                                        success="right" name="username" onChange={(e) => onChange(e)} required />
+                                    <MDBInput label="Type your password" icon="lock" group type="password" validate name="password" onChange={(e) => onChange(e)} required />
+                                </div>
+                                <div className="text-center">
+                                    <MDBBtn type="submit">Login</MDBBtn>
+                                </div>
+                            </Form>
+                        </MDBCol>
+                    </MDBRow>
+                </MDBCard>
+            </MDBContainer>
         )
     )
 }

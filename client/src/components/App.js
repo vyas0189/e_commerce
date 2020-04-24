@@ -16,7 +16,6 @@ import PrivateRouteAdmin from './PrivateRoutes/Admin';
 
 const App = () => {
 
-  const getProducts = useStoreActions(action => action.products.getAllProducts)
   const getUser = useStoreActions(actions => actions.user.getUser);
 
   useEffect(() => {

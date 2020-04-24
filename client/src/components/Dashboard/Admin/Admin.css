@@ -1,0 +1,11 @@
+.adminPane {
+    height: calc(100vh - 56px);
+    display: flex;
+    justify-content: center;
+    padding-top: 4rem;
+    overflow-x: hidden;
+}
+
+.adminRow {
+    width: 100vw;
+}
