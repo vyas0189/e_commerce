@@ -18,7 +18,6 @@ const AddToCartButton = (props) => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        console.log(props, role);
 
         if (!isAuthenticated) {
             return history.push('/login');
@@ -26,12 +25,12 @@ const AddToCartButton = (props) => {
         if (role.role !== "user") {
             return;
         }
-        if (props.productQuantity <= 0) {
+        if (props.productquantity <= 0) {
             setMessage('Item sold out.')
             return handleShow()
         }
         const item = cart.filter((item) => {
-            return item._id = props.productID
+            return item.productID._id == props.productid
         });
 
         if (item.length > 0) {
@@ -41,7 +40,7 @@ const AddToCartButton = (props) => {
 
         setMessage('Item added to cart.');
         handleShow();
-        addToCart({ productID: props.productID, quantity: props.quantity });
+        addToCart({ productID: props.productid, quantity: props.quantity });
     }
     return (
         <>

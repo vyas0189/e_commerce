@@ -40,7 +40,7 @@ const NavbarComponent = () => {
                         <Link className="dropdown-item" to='/products/men'>Men</Link>
                         <Link className="dropdown-item" to='/products/women'>Women</Link>
                         <Link className="dropdown-item" to='/products/teen'>Teen</Link>
-                        <Link className="dropdown-item" to='/products/kids'>Kids</Link>
+                        <Link className="dropdown-item" to='/products/kid'>Kids</Link>
                         <Link className="dropdown-item" to='/products/shoes'>Shoes</Link>
                     </div>
 

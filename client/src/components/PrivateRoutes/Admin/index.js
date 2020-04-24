@@ -12,7 +12,7 @@ const PrivateRouteAdmin = ({ component: Component, ...rest }) => {
     return (
         <Route
             {...rest}
-            render={props => loading ? <h1>Loading</h1> : isAuthenticated && user && user.role === 'admin' ? <Component {...props} /> : <Redirect to={'/admin'} />}
+            render={props => loading ? <h1>Loading...</h1> : isAuthenticated && user && user.role === 'admin' ? <Component {...props} /> : <Redirect to={'/admin'} />}
         />
     )
 }
