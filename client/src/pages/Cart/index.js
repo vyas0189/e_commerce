@@ -2,6 +2,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import React, { useEffect } from 'react';
 import { Button, Col, Container, Figure, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import RemoveFromCartButton from '../../components/RemoveFromCartButton';
 
 const Cart = () => {
 
@@ -33,6 +34,7 @@ const Cart = () => {
                     <h1>{cart.length} items:</h1>
                     <Row>
                         <Col md='8'>
+
                             {cart.map((product) => (
                                 <ListGroup key={product._id}>
                                     <Figure>
@@ -46,7 +48,8 @@ const Cart = () => {
                                                         {product.productID.name}<br></br><br></br>
                                                         {product.productID.description}<br></br><br></br>
                                                         <b>Price: ${product.productID.price}</b><br></br>
-                                                        <b>Quantity: 1</b>
+                                                        <b>Quantity: 1</b><br></br>
+                                                        <RemoveFromCartButton productid={product.productID} quantity= {0} />
                                                     </Figure.Caption>
                                                 </Col>
                                             </Row>
