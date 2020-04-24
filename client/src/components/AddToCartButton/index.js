@@ -18,7 +18,6 @@ const AddToCartButton = (props) => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        console.log(props, role);
 
         if (!isAuthenticated) {
             return history.push('/login');
