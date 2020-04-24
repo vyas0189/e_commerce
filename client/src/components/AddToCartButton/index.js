@@ -13,19 +13,20 @@ const AddToCartButton = (props) => {
     const cart = useStoreState(state => state.products.cart);
     const addToCart = useStoreActions(actions => actions.products.addToCart);
     const isAuthenticated = useStoreState(state => state.user.isAuthenticated);
-    const role = useStoreState(state => state.user.role)
+    const role = useStoreState(state => state.user.user)
     const history = useHistory();
 
     const handleClick = (e) => {
         e.preventDefault();
+        console.log(props, role);
 
         if (!isAuthenticated) {
             return history.push('/login');
         }
-        if (role !== "user") {
+        if (role.role !== "user") {
             return;
         }
-        if (props.productQuantity >= 0) {
+        if (props.productQuantity <= 0) {
             setMessage('Item sold out.')
             return handleShow()
         }
@@ -50,10 +51,10 @@ const AddToCartButton = (props) => {
 
             <Modal show={show} onHide={handleClose}>
 
-                <Modal.Body>Item already in cart!</Modal.Body>
+                <Modal.Body>{message}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        {message}
+                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>
