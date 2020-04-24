@@ -99,7 +99,7 @@ const NavbarComponent = () => {
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Link to="/">
-                <Navbar.Brand>React-Bootstrap</Navbar.Brand>
+                <Navbar.Brand>VKJ Products</Navbar.Brand>
             </Link>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
