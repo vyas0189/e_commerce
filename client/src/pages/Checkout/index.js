@@ -89,14 +89,6 @@ const Checkout = () => {
                             <Col xs='8'><p>Subtotal</p></Col>
                             <Col xs='4'><p>$</p></Col>
                         </Row>
-                        <Row>
-                            <Col xs='8'><p>Shipping</p></Col>
-                            <Col xs='4'><p>$</p></Col>
-                        </Row>
-                        <Row>
-                            <Col xs='8'><p>Tax</p></Col>
-                            <Col xs='4'><p>0$</p></Col>
-                        </Row>
                     </ListGroupItem>
                     <ListGroupItem>
                         <Row>
