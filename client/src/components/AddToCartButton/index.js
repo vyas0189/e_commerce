@@ -18,7 +18,6 @@ const AddToCartButton = (props) => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        console.log(props, role);
 
         if (!isAuthenticated) {
             return history.push('/login');
@@ -33,8 +32,6 @@ const AddToCartButton = (props) => {
         const item = cart.filter((item) => {
             return item.productID._id == props.productid
         });
-
-        console.log('Items: ', item);
 
         if (item.length > 0) {
             setMessage('Item already in cart.')

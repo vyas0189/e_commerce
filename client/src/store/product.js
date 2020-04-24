@@ -32,7 +32,6 @@ const productModel = {
             const res = await axios.get(`/api/product/${productID}`);
 
             if (res.status === 200) {
-                console.log(res.data.product)
                 action.setProduct(res.data.product);
             }
         } catch (error) {
@@ -59,8 +58,6 @@ const productModel = {
     addProduct: thunk(async (action, { name, productType, price, image, quantity, description }) => {
         action.setError(null);
         action.isLoading(true);
-        console.log({ name, productType, price, image, quantity, description });
-
         try {
             const res = await axios.post('/api/product', { name, productType, price, image, quantity, description });
 

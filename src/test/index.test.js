@@ -26,10 +26,7 @@ const dropAllCollections = async () => {
       await collection.drop();
     } catch (error) {
       if (error.message === 'ns not found') return;
-
       if (error.message.includes('a background operation is currently running')) return;
-
-      console.log(error.message);
     }
   }
 };

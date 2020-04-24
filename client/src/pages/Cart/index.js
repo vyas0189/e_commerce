@@ -33,8 +33,8 @@ const Cart = () => {
                     <h1>{cart.length} items:</h1>
                     <Row>
                         <Col md='8'>
-                            {cart.map((product, index) => (
-                                <ListGroup>
+                            {cart.map((product) => (
+                                <ListGroup key={product._id}>
                                     <Figure>
                                         <ListGroupItem>
                                             <Row>

@@ -42,8 +42,8 @@ const Products = () => {
                 <Container style={styles.container}>
                     <h1>{category}</h1>
                     <Row>
-                        {products.map((product, index) => (
-                            <Col md='4' lg='3' key={index}>
+                        {products.map((product) => (
+                            <Col md='4' lg='3' key={product._id}>
                                 <div className="mt-4" />
                                 <Card style={styles.cardFormat} >
                                     <Link to={`/product/${product._id}`}> <Card.Img variant="top" style={styles.img} src={product.image} /></Link>
