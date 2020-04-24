@@ -19,9 +19,12 @@ router.get('/me', auth, catchAsync(async (req, res) => {
 router.post('/register', guest, catchAsync(async (req, res) => {
     await signUpSchema.validateAsync(req.body, { abortEarly: false });
     const {
-        email, firstName, lastName, address, username, password, city, state, zip, address2, role,
+        email, firstName, lastName, address, username, password, city, state, zip, role,
     } = req.body;
-
+    let { address2 } = req.body;
+    if (address2 === null || address2 === 'n/a' || address2 === 'N/A') {
+        address2 = '';
+    }
     let user = await User.findOne({ email });
 
     if (user) {

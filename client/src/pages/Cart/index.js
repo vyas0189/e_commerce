@@ -47,9 +47,10 @@ const Cart = () => {
                                                     <Figure.Caption float='right'>
                                                         {product.productID.name}<br></br><br></br>
                                                         {product.productID.description}<br></br><br></br>
+
                                                         <b>Price: ${product.productID.price}</b><br></br>
                                                         <b>Quantity: 1</b><br></br>
-                                                        <RemoveFromCartButton productid={product.productID} quantity= {0} />
+                                                        <RemoveFromCartButton productid={product.productID} quantity={0} />
                                                     </Figure.Caption>
                                                 </Col>
                                             </Row>
