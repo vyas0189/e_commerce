@@ -67,7 +67,7 @@ const Cart = () => {
                     <center>
                         <Link to={'/checkout'} ><Button variant="primary" type="submit">
                             Checkout
-    </Button>
+                        </Button>
                         </Link>
                     </center>
                 </ListGroupItem>
@@ -98,7 +98,6 @@ const Cart = () => {
                                                     <Figure.Caption float='right'>
                                                         {product.productID.name}<br></br><br></br>
                                                         {product.productID.description}<br></br><br></br>
- 
                                                         <b>Price: ${product.productID.price}</b><br></br>
                                                         <b>Quantity: 1</b><br></br>
                                                         <RemoveFromCartButton productid={product.productID} quantity={0} />

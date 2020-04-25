@@ -46,13 +46,17 @@ const userModel = {
         action.isLoading(true);
 
         try {
-            const res = await axios.post('/api/user/register', { email, firstName, lastName, address, username, password, city, state, zip, address2, role: 'patient' });
+            const res = await axios.post('/api/user/register', { email, firstName, lastName, address, username, password, city, state, zip, address2, role: 'user' });
 
             if (res.status === 200) {
-                action.isAuthenticated(true);
+                action.setAuthenticated(true);
+                console.log(res.data);
+
                 action.setUser(res.data.user)
             }
         } catch (error) {
+            console.log(error);
+
             action.setError(error.response.data.message);
         }
         action.isLoading(false);
@@ -88,7 +92,7 @@ const userModel = {
 
     setUser: action((state, user) => {
         state.user = user;
-    })
+    }),
 }
 
 
