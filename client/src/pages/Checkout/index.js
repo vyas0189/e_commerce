@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useStoreActions, useStoreState } from "easy-peasy";
+
 import React, { useState } from 'react';
 import { ListGroup, ListGroupItem, Row, Col, Container, InputGroup, Form, Button } from 'react-bootstrap';
 import { Redirect } from "react-router-dom";
  
+
 const styles = {
     container: {
       paddingTop: '120px',
@@ -59,6 +61,9 @@ const Checkout = () => {
     const isAuthenticated = useStoreState(state => state.user.isAuthenticated);
     const loading = useStoreState(state => state.user.loading);
  
+
+    const user = useStoreState(state => state.user.user);
+
     const [formDetails, setFormDetails] = useState({
         address: '',
         address2: '',
@@ -85,7 +90,7 @@ const Checkout = () => {
       };
    
       const onSubmit = async (e) => {
-   
+
         e.preventDefault();
         if (!address2 || address2.length === 0) {
           address2 = 'n/a'
@@ -100,7 +105,6 @@ const Checkout = () => {
           ccExp,
           ccCCV,
         };
-   
         const userAddress = {
           address,
           address2,
@@ -118,13 +122,19 @@ const Checkout = () => {
           console.log(err);
         }
       };
+
+
     return (
+        loading ? <h1>Loading...</h1> : (
+            
         <div>
+            
             <Container style={styles.container}>
             <h1 style={styles.h1}>Check out</h1>
             <Row>
             <Col md='8'>
             <Form>
+
                     <Form.Group controlId="formBasicAddress">
                         <Form.Label>Address</Form.Label>
                         <Form.Control required type="text" placeholder="Enter Address" name="address" value={address}
@@ -224,19 +234,22 @@ const Checkout = () => {
                             <Form.Control required type="number" placeholder="Enter Security Code" name="zip" />
                         </Form.Group>
                     </Form.Row>
+
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
                 </Form>
                 <Form>
                 </Form>
-            </Col>
+
+            </Col> 
             <Col md = '4'>
                 {summary()}
             </Col>
             </Row>
             </Container>
         </div>
+        )
     )
 }
  
