@@ -38,7 +38,7 @@ const userModel = {
                 toast.success('Logged in successfully!')
             }
         } catch (error) {
-            toast.error('Unable to update to cart.')
+            toast.error('Invalid username or password.')
         }
         action.isLoading(false);
     }),
