@@ -48,7 +48,7 @@ const Register = () => {
 
     e.preventDefault();
     if (!address2 || address2.length === 0) {
-      address2 = ''
+      address2 = 'n/a'
     }
     const userRegister = {
       username,
