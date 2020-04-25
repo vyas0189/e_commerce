@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { action, thunk } from 'easy-peasy';
+import { toast } from 'react-toastify';
 
 const userModel = {
     isAuthenticated: false,
@@ -34,9 +35,10 @@ const userModel = {
             if (res.status === 200) {
                 action.setAuthenticated(true)
                 action.getUser();
+                toast.success('Logged in successfully!')
             }
         } catch (error) {
-            action.setError(error.response.data.message);
+            toast.error('Unable to update to cart.')
         }
         action.isLoading(false);
     }),
@@ -51,9 +53,10 @@ const userModel = {
             if (res.status === 200) {
                 action.setAuthenticated(true);
                 action.setUser(res.data.user)
+                toast.success('Registered in successfully!')
             }
         } catch (error) {
-            action.setError(error.response.data.message);
+            toast.error('Invalid Info.')
         }
         action.isLoading(false);
     }),
@@ -68,9 +71,11 @@ const userModel = {
             if (res.status === 200) {
                 action.setAuthenticated(false)
                 action.setUser(null);
+                toast.success('Logged out successfully!')
+
             }
         } catch (error) {
-            action.setError(error.response.data.message);
+            toast.error('Unable to logout.')
         }
         action.isLoading(false);
 

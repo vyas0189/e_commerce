@@ -7,6 +7,7 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Redirect } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./Register.css";
 
 const Register = () => {
@@ -74,6 +75,8 @@ const Register = () => {
       axios.post('/api/address', userAddress).then(res => {
         if (res.status === 200 && res.data.data.XAVResponse.hasOwnProperty('ValidAddressIndicator')) {
           register(userRegister);
+        } else {
+          toast.error('Invalid Address')
         }
       })
     } catch (err) {
