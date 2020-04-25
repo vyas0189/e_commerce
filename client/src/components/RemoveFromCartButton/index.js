@@ -18,8 +18,6 @@ const RemoveFromCartButton = (props) => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        console.log(props, role);
-
         if (!isAuthenticated) {
             return history.push('/login');
         }
@@ -27,10 +25,8 @@ const RemoveFromCartButton = (props) => {
             return;
         }
         const item = cart.filter((item) => {
-            return item.productID._id == props.productid
+            return item.productID._id === props.productid
         });
-
-        console.log('Items: ', item);
 
         setMessage('Item removed from cart.');
         handleShow();

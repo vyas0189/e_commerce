@@ -50,13 +50,9 @@ const userModel = {
 
             if (res.status === 200) {
                 action.setAuthenticated(true);
-                console.log(res.data);
-
                 action.setUser(res.data.user)
             }
         } catch (error) {
-            console.log(error);
-
             action.setError(error.response.data.message);
         }
         action.isLoading(false);
