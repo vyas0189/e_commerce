@@ -1,5 +1,6 @@
 import axios from "axios";
 import { action, thunk } from "easy-peasy";
+import { toast } from "react-toastify";
 
 const productModel = {
     loading: true,
@@ -127,8 +128,10 @@ const productModel = {
 
             if (res.status === 200) {
                 action.getCart();
+                toast.success('Added to Cart!')
             }
         } catch (error) {
+            toast.error('Unable to add to cart.')
             action.setError(error.response.data.message);
         }
         action.isLoading(false);
@@ -142,9 +145,12 @@ const productModel = {
             const res = await axios.put('/api/user/updateFromCart', { productID, quantity });
 
             if (res.status === 200) {
+                toast.success('Cart Updated')
                 action.getCart();
             }
         } catch (error) {
+            toast.error('Unable to update to cart.')
+
             action.setError(error.response.data.message);
         }
 
@@ -156,13 +162,15 @@ const productModel = {
         action.isLoading(true);
 
         try {
-            const res = await axios.post('/checkout');
+            const res = await axios.post('/api/user/checkout');
 
             if (res.status === 200) {
+                toast.success('Item(s) checked out.')
+
                 action.getCart();
             }
         } catch (error) {
-            action.setError(error.response.data.message);
+            toast.error('Unable checkout.');
         }
 
         action.isLoading(false);

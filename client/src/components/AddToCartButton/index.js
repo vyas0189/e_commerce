@@ -33,8 +33,6 @@ const AddToCartButton = (props) => {
             return item.productID._id == props.productid
         });
 
-        console.log('Items: ', item);
-
         if (item.length > 0) {
             setMessage('Item already in cart.')
             return handleShow()

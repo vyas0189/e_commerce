@@ -7,6 +7,7 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Redirect } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./Register.css";
 
 const Register = () => {
@@ -74,6 +75,8 @@ const Register = () => {
       axios.post('/api/address', userAddress).then(res => {
         if (res.status === 200 && res.data.data.XAVResponse.hasOwnProperty('ValidAddressIndicator')) {
           register(userRegister);
+        } else {
+          toast.error('Invalid Address')
         }
       })
     } catch (err) {
@@ -219,40 +222,3 @@ const Register = () => {
 };
 
 export default Register;
-
-
-// HERE 
-// {…}
-// ​
-// config: Object { url: "/api/address", method: "post", data: "{\"address\":\"17130 MCLEAN RD\",\"address2\":\"n/a\",\"city\":\"Pearland\",\"state\":\"TX\",\"zip\":\"77584\"}", … }
-// ​
-// data: {…}
-// ​​
-// data: {…}
-// ​​​
-// XAVResponse: {…}
-// ​​​​
-// Candidate: Object { AddressKeyFormat: {…} }
-// ​​​​
-// Response: Object { ResponseStatus: {…} }
-// ​​​​
-// ValidAddressIndicator: ""
-// ​​​​
-// <prototype>: Object { … }
-// ​​​
-// <prototype>: Object { … }
-// ​​
-// message: "OK"
-// ​​
-// <prototype>: Object { … }
-// ​
-// headers: Object { "access-control-allow-origin": "https://e-commerce-software-eng.herokuapp.com/", connection: "close", "content-length": "371", … }
-// ​
-// request: XMLHttpRequest { readyState: 4, timeout: 0, withCredentials: false, … }
-// ​
-// status: 200
-// ​
-// statusText: "OK"
-// ​
-// <prototype>: Object { … }
-// index.js:72
