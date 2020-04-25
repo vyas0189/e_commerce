@@ -11,6 +11,10 @@ const Cart = () => {
     const getCart = useStoreActions(actions => actions.products.getCart);
  
     const styles = {
+        container: {
+            paddingTop: '120px', 
+            paddingBottom: '120px'
+          },
         h1: {
             fontSize: '15px',
             color: 'black'
@@ -36,14 +40,18 @@ const Cart = () => {
             <ListGroup>
                 <ListGroupItem><h1 style={styles.h2}>Order Summary</h1></ListGroupItem>
                 <ListGroupItem>
-                    {
-                        <Row>
-                            <Col xs='8'><p>(prod x quantity)</p></Col>
-                            <Col xs='4'><p>${sum.toFixed(2)}</p></Col>
+                {cart.map((product) => (
+                        <Row key = {product.productID}>
+                            <Col xs='8'><p>1 x {product.productID.name}</p></Col>
+                            <Col xs='4'><p>${product.productID.price.toFixed(2)}</p></Col>
                         </Row>
-                    }
+                ))}
                 </ListGroupItem>
                 <ListGroupItem>
+                    <Row>
+                        <Col xs='8'><p>Subtotal</p></Col>
+                        <Col xs='4'><p>${sum.toFixed(2)}</p></Col>
+                    </Row>
                     <Row>
                         <Col xs='8'><p>Tax</p></Col>
                         <Col xs='4'><p>${tax.toFixed(2)}</p></Col>
@@ -59,11 +67,12 @@ const Cart = () => {
                     <center>
                         <Link to={'/checkout'} ><Button variant="primary" type="submit">
                             Checkout
-    </Button>
+                        </Button>
                         </Link>
                     </center>
                 </ListGroupItem>
             </ListGroup>
+
         );
     }
  
@@ -71,7 +80,7 @@ const Cart = () => {
     return (
         <div>
             {loading ? <h1>Loading...</h1> :
-                <Container>
+                <Container style={styles.container}>
                     <h1>Shopping Cart</h1><br></br>
                     <h1>{cart.length} items:</h1>
                     <Row>
@@ -89,7 +98,6 @@ const Cart = () => {
                                                     <Figure.Caption float='right'>
                                                         {product.productID.name}<br></br><br></br>
                                                         {product.productID.description}<br></br><br></br>
- 
                                                         <b>Price: ${product.productID.price}</b><br></br>
                                                         <b>Quantity: 1</b><br></br>
                                                         <RemoveFromCartButton productid={product.productID} quantity={0} />
