@@ -110,7 +110,7 @@ const Checkout = () => {
             zip: anotherAddress ? zip : user.zip,
         }
         try {
-            axios.post('/api/address', userAddress).then(res => {
+            await axios.post('/api/address', userAddress).then(res => {
                 if (res.status === 200 && res.data.data.XAVResponse.hasOwnProperty('ValidAddressIndicator')) {
                     checkout();
                 } else {
@@ -118,7 +118,7 @@ const Checkout = () => {
                 }
             })
         } catch (err) {
-            console.log(err);
+            toast.error('Invalid Address')
         }
     };
     const formInfo = () => {

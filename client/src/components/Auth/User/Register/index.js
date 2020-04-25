@@ -48,7 +48,7 @@ const Register = () => {
 
     e.preventDefault();
     if (!address2 || address2.length === 0) {
-      address2 = 'n/a'
+      address2 = ''
     }
     const userRegister = {
       username,
@@ -72,7 +72,7 @@ const Register = () => {
       zip,
     }
     try {
-      axios.post('/api/address', userAddress).then(res => {
+      await axios.post('/api/address', userAddress).then(res => {
         if (res.status === 200 && res.data.data.XAVResponse.hasOwnProperty('ValidAddressIndicator')) {
           register(userRegister);
         } else {
@@ -80,7 +80,7 @@ const Register = () => {
         }
       })
     } catch (err) {
-      console.log(err);
+      toast.error('Invalid Address');
     }
   };
 

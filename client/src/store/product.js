@@ -64,9 +64,10 @@ const productModel = {
 
             if (res.status === 200) {
                 action.getAllProducts();
+                toast.success('Product Added.')
             }
         } catch (error) {
-            action.setError(error.response.data.message);
+            toast.error('Unable to add product')
         }
         action.isLoading(false);
 
@@ -80,9 +81,11 @@ const productModel = {
 
             if (res.status === 200) {
                 action.getAllProducts();
+                toast.success('Product Updated.')
+
             }
         } catch (error) {
-            action.setError(error.response.data.message);
+            toast.error('Unable to update product')
         }
         action.isLoading(false);
 
@@ -97,9 +100,12 @@ const productModel = {
 
             if (res.status === 200) {
                 action.getAllProducts();
+                toast.success('Product Deleted.')
+
             }
         } catch (error) {
-            action.setError(error.response.data.message);
+            toast.error('Unable to update deleted')
+
         }
         action.isLoading(false);
     }),
@@ -132,7 +138,6 @@ const productModel = {
             }
         } catch (error) {
             toast.error('Unable to add to cart.')
-            action.setError(error.response.data.message);
         }
         action.isLoading(false);
     }),
@@ -150,8 +155,6 @@ const productModel = {
             }
         } catch (error) {
             toast.error('Unable to update to cart.')
-
-            action.setError(error.response.data.message);
         }
 
         action.isLoading(false);
