@@ -159,10 +159,14 @@ const Checkout = () => {
                                         onChange={(e) => onChange(e)} placeholder="Enter Security Code" name="ccCCV" />
                                 </Form.Group>
                             </Form.Row>
-
-                            <Button variant="primary" type="submit">
-                                Submit
-                    </Button>
+                            <div>
+                                <Button variant="primary" onClick={handleShowNewForm}>
+                                    Send to another Address
+                             </Button>
+                                <Button variant="primary" type="submit" disabled={cart.length <= 0}>
+                                    Submit
+                            </Button>
+                            </div>
                         </ListGroup>
                     </Form>
 
@@ -265,21 +269,14 @@ const Checkout = () => {
                             onChange={(e) => onChange(e)} />
                     </Form.Group>
                 </Form.Row>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={cart.length <= 0}>
                     Submit
-        </Button>
+                </Button>
             </Form>
         )
     }
     const handleShowNewForm = (e) => {
         e.preventDefault();
-        setFormDetails({
-            address: '',
-            address2: '',
-            city: '',
-            state: '',
-            zip: '',
-        })
         handleShow()
     }
     return (
@@ -290,10 +287,6 @@ const Checkout = () => {
                     <h1 style={styles.h1}>Check out</h1>
                     {formInfo()}
                     <>
-                        <Button variant="primary" onClick={handleShowNewForm}>
-                            Send to another Address
-      </Button>
-
                         <Modal show={show} onHide={handleClose}>
                             <Modal.Header closeButton>
                                 <Modal.Title>Modal heading</Modal.Title>
