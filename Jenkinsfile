@@ -5,13 +5,13 @@ pipeline {
         stage("build"){
             steps {
                 echo 'Building...'
-                sh 'CI=false yarn build'
+                sh 'CI=false npm run build'
             }
         }
         stage("test"){
             steps {
                 echo 'Testing...'
-                sh 'yarn test'
+                sh 'npm run test'
             }
         }
     }
