@@ -12,7 +12,7 @@ pipeline {
         stage("test"){
             steps {
                 echo 'Testing...'
-                nodejs('Node-11){
+                nodejs('Node-11'){
                     sh 'yarn test'
                  }
             }
