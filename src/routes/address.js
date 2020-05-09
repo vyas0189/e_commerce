@@ -18,8 +18,11 @@ router.post('/', async (req, res) => {
         };
 
         const {
-            address, address2, city, state, zip,
+            address, city, state, zip,
         } = req.body;
+        let { address2 } = req.body;
+        address2 = address2 === 'n/a' ? null : address2;
+
         const data = {
             XAVRequest: {
                 AddressKeyFormat: {

@@ -73,7 +73,10 @@ const Register = () => {
     }
     try {
       await axios.post('/api/address', userAddress).then(res => {
-        if (res.status === 200 && res.data.data.XAVResponse.hasOwnProperty('ValidAddressIndicator')) {
+        if (res.status === 200 &&
+          (res.data.data.XAVResponse.hasOwnProperty('ValidAddressIndicator') ||
+            res.data.data.XAVResponse.hasOwnProperty('AmbiguousAddressIndicator'))
+        ) {
           register(userRegister);
         } else {
           toast.error('Invalid Address')

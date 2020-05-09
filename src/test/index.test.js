@@ -31,7 +31,7 @@ const dropAllCollections = async () => {
   }
 };
 beforeAll(async () => {
-  const url = `mongodb://localhost/${TEST_DB}`;
+  const url = `mongodb://192.168.99.100/${TEST_DB}`;
   await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
   await agent
     .post('/api/user/register')
