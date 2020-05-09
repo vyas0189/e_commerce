@@ -1,2 +1,2 @@
 import './src';
-// Test
+// Testing
