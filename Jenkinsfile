@@ -11,7 +11,7 @@ pipeline {
         }
         stage("test"){
             steps {
-                echo 'Testing...'
+                echo 'Testing App ...'
                 nodejs('Node-12.16'){
                     sh 'yarn test'
                  }
