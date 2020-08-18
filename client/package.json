@@ -16,16 +16,13 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.3",
-    "react-toastify": "^5.5.0",
-    "snyk": "^1.377.1"
+    "react-toastify": "^5.5.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "snyk-protect": "snyk protect",
-    "prepare": "yarn run snyk-protect"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,6 +39,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:4000",
-  "snyk": true
+  "proxy": "http://localhost:4000"
 }
