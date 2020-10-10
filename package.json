@@ -54,7 +54,7 @@
     "helmet": "^3.21.3",
     "joi-objectid": "^3.0.1",
     "lodash": "^4.17.20",
-    "mongoose": "^5.10.1",
+    "mongoose": "^5.10.6",
     "morgan": "^1.9.1"
   },
   "jest": {
