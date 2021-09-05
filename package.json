@@ -42,7 +42,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@hapi/joi": "^17.1.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.3",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.4.1",
     "concurrently": "^5.1.0",
