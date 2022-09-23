@@ -42,7 +42,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@hapi/joi": "^17.1.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.3",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.4.1",
     "concurrently": "^5.1.0",
@@ -53,8 +53,8 @@
     "express-session": "^1.17.0",
     "helmet": "^3.21.3",
     "joi-objectid": "^3.0.1",
-    "lodash": "^4.17.20",
-    "mongoose": "^5.12.3",
+    "lodash": "^4.17.21",
+    "mongoose": "^5.13.15",
     "morgan": "^1.9.1"
   },
   "jest": {
